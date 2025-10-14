@@ -1,0 +1,75 @@
+{
+  "short_name": "Biomerkin",
+  "name": "Biomerkin - Autonomous AI Agent System for Genomics",
+  "description": "Revolutionary multi-agent AI system for genomics analysis using AWS Bedrock Agents and autonomous reasoning capabilities.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#3b82f6",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["health", "medical", "productivity", "utilities"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "screenshots": [
+    {
+      "src": "screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Biomerkin Dashboard"
+    },
+    {
+      "src": "screenshot-narrow.png", 
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Biomerkin Mobile View"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start Analysis",
+      "short_name": "Analyze",
+      "description": "Start a new genomics analysis",
+      "url": "/analysis",
+      "icons": [
+        {
+          "src": "icon-analysis.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "View Demo",
+      "short_name": "Demo",
+      "description": "View demo scenarios",
+      "url": "/demo",
+      "icons": [
+        {
+          "src": "icon-demo.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

@@ -1,0 +1,475 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Play, 
+  Award, 
+  Zap, 
+  Brain, 
+  Dna, 
+  FileText, 
+  Pill,
+  CheckCircle,
+  ExternalLink,
+  Clock,
+  Users,
+  Target,
+  Lightbulb,
+  X
+} from 'lucide-react';
+import InteractiveDemo from '../components/InteractiveDemo';
+
+const DemoPage = () => {
+  const [selectedDemo, setSelectedDemo] = useState(null);
+  const [showInteractiveDemo, setShowInteractiveDemo] = useState(false);
+
+  const demoScenarios = [
+    {
+      id: 'brca1-analysis',
+      title: 'BRCA1 Hereditary Cancer Analysis',
+      description: 'Comprehensive analysis of BRCA1 gene variants for hereditary breast and ovarian cancer risk assessment',
+      duration: '3-5 minutes',
+      complexity: 'High',
+      highlights: [
+        'Pathogenic variant identification',
+        'PARP inhibitor recommendations',
+        'Family cascade testing guidance',
+        'Clinical decision support'
+      ],
+      sampleData: 'BRCA1 gene sequence with known pathogenic variants',
+      expectedResults: [
+        'Identification of c.5266dupC pathogenic variant',
+        'High cancer risk assessment',
+        'Olaparib therapy recommendation',
+        'Genetic counseling referral'
+      ]
+    },
+    {
+      id: 'tp53-analysis',
+      title: 'TP53 Tumor Suppressor Analysis',
+      description: 'Analysis of TP53 gene mutations and their impact on cancer susceptibility and treatment response',
+      duration: '2-4 minutes',
+      complexity: 'Medium',
+      highlights: [
+        'Tumor suppressor function analysis',
+        'Drug resistance predictions',
+        'Prognosis assessment',
+        'Treatment stratification'
+      ],
+      sampleData: 'TP53 gene sequence with missense mutations',
+      expectedResults: [
+        'Functional impact assessment',
+        'Cancer risk stratification',
+        'Targeted therapy options',
+        'Monitoring recommendations'
+      ]
+    },
+    {
+      id: 'pharmacogenomics',
+      title: 'Pharmacogenomics Panel',
+      description: 'Multi-gene analysis for drug metabolism and response prediction across multiple therapeutic areas',
+      duration: '4-6 minutes',
+      complexity: 'High',
+      highlights: [
+        'Drug metabolism predictions',
+        'Adverse reaction risk',
+        'Dosing recommendations',
+        'Alternative drug suggestions'
+      ],
+      sampleData: 'CYP2D6, CYP2C19, DPYD gene variants',
+      expectedResults: [
+        'Metabolizer status classification',
+        'Drug-specific recommendations',
+        'Dosing adjustments',
+        'Safety considerations'
+      ]
+    },
+    {
+      id: 'rare-disease',
+      title: 'Rare Disease Diagnosis',
+      description: 'Comprehensive genomic analysis for rare disease diagnosis using whole exome sequencing data',
+      duration: '5-8 minutes',
+      complexity: 'Very High',
+      highlights: [
+        'Variant prioritization',
+        'Phenotype matching',
+        'Literature mining',
+        'Diagnostic recommendations'
+      ],
+      sampleData: 'Exome sequencing data with rare variants',
+      expectedResults: [
+        'Candidate gene identification',
+        'Pathogenicity assessment',
+        'Phenotype correlation',
+        'Diagnostic confidence score'
+      ]
+    }
+  ];
+
+  const awsFeatures = [
+    {
+      icon: Brain,
+      title: 'Amazon Bedrock Agents',
+      description: 'Autonomous AI agents with reasoning capabilities using Claude 3 Sonnet',
+      demo: 'Watch agents make autonomous decisions about variant interpretation'
+    },
+    {
+      icon: Zap,
+      title: 'Multi-Agent Coordination',
+      description: 'Seamless coordination between specialized AI agents',
+      demo: 'See how agents pass data and coordinate analysis workflows'
+    },
+    {
+      icon: Target,
+      title: 'External API Integration',
+      description: 'Real-time integration with PubMed, DrugBank, and clinical databases',
+      demo: 'Live API calls to scientific databases during analysis'
+    },
+    {
+      icon: Lightbulb,
+      title: 'Autonomous Reasoning',
+      description: 'LLM-powered reasoning for clinical decision making',
+      demo: 'Transparent reasoning explanations for all recommendations'
+    }
+  ];
+
+  const judgeHighlights = [
+    {
+      category: 'Technical Innovation',
+      points: [
+        'Novel multi-agent architecture with autonomous coordination',
+        'Advanced LLM reasoning for clinical decision making',
+        'Real-time integration with 5+ external scientific APIs',
+        'Scalable serverless architecture on AWS'
+      ]
+    },
+    {
+      category: 'AWS Integration',
+      points: [
+        'Amazon Bedrock Agents for autonomous AI capabilities',
+        'AWS Lambda for serverless agent execution',
+        'API Gateway for RESTful endpoints',
+        'DynamoDB for workflow state management',
+        'S3 + CloudFront for web hosting',
+        'CloudWatch for monitoring and logging'
+      ]
+    },
+    {
+      category: 'Real-World Impact',
+      points: [
+        'Clinical-grade genomics analysis and reporting',
+        'Personalized medicine recommendations',
+        'Drug discovery and clinical trial matching',
+        'Cost-effective healthcare decision support'
+      ]
+    },
+    {
+      category: 'Autonomous Capabilities',
+      points: [
+        'Zero human intervention required during analysis',
+        'Intelligent error handling and recovery',
+        'Adaptive workflow based on data quality',
+        'Autonomous literature research and summarization'
+      ]
+    }
+  ];
+
+  const startDemo = (demoId) => {
+    setSelectedDemo(demoId);
+    setShowInteractiveDemo(true);
+  };
+
+  const closeDemo = () => {
+    setShowInteractiveDemo(false);
+    setSelectedDemo(null);
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto space-y-12">
+      {/* Interactive Demo Modal */}
+      <AnimatePresence>
+        {showInteractiveDemo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Interactive Demo
+                </h2>
+                <button
+                  onClick={closeDemo}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <X className="h-5 w-5 text-gray-500" />
+                </button>
+              </div>
+              
+              <div className="p-6">
+                <InteractiveDemo 
+                  scenarioId={selectedDemo}
+                  onComplete={() => console.log('Demo completed')}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* Header */}
+      <div className="text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6"
+        >
+          <span className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+            🏆 AWS Hackathon 2024 Demo
+          </span>
+        </motion.div>
+        
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          Interactive Demo Scenarios
+        </h1>
+        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          Experience our autonomous AI agent system in action with real genomics data and clinical scenarios
+        </p>
+      </div>
+
+      {/* AWS Requirements Showcase */}
+      <section className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            AWS Hackathon Requirements Demo
+          </h2>
+          <p className="text-lg text-gray-600">
+            See how our system meets all AWS AI Agent requirements
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {awsFeatures.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-lg p-6 shadow-lg"
+              >
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
+                  <Icon className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  {feature.description}
+                </p>
+                <p className="text-blue-600 text-sm font-medium">
+                  {feature.demo}
+                </p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Demo Scenarios */}
+      <section>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Choose Your Demo Scenario
+          </h2>
+          <p className="text-lg text-gray-600">
+            Each scenario demonstrates different aspects of our autonomous AI system
+          </p>
+        </div>
+        
+        <div className="grid lg:grid-cols-2 gap-8">
+          {demoScenarios.map((scenario, index) => (
+            <motion.div
+              key={scenario.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300"
+            >
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {scenario.title}
+                  </h3>
+                  <div className="flex items-center space-x-2">
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                      {scenario.complexity}
+                    </span>
+                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium flex items-center space-x-1">
+                      <Clock className="h-3 w-3" />
+                      <span>{scenario.duration}</span>
+                    </span>
+                  </div>
+                </div>
+                
+                <p className="text-gray-600 mb-4">
+                  {scenario.description}
+                </p>
+                
+                <div className="mb-4">
+                  <h4 className="font-medium text-gray-900 mb-2">Demo Highlights:</h4>
+                  <ul className="space-y-1">
+                    {scenario.highlights.map((highlight, idx) => (
+                      <li key={idx} className="flex items-center space-x-2 text-sm text-gray-600">
+                        <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div className="mb-6">
+                  <h4 className="font-medium text-gray-900 mb-2">Expected Results:</h4>
+                  <ul className="space-y-1">
+                    {scenario.expectedResults.slice(0, 2).map((result, idx) => (
+                      <li key={idx} className="flex items-center space-x-2 text-sm text-gray-600">
+                        <Target className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                        <span>{result}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <button
+                  onClick={() => startDemo(scenario.id)}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
+                >
+                  <Play className="h-5 w-5" />
+                  <span>Start Demo</span>
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Judge Evaluation Points */}
+      <section className="bg-white rounded-2xl shadow-lg p-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            🏆 Hackathon Judge Evaluation Points
+          </h2>
+          <p className="text-lg text-gray-600">
+            Key technical and innovation highlights for evaluation
+          </p>
+        </div>
+        
+        <div className="grid lg:grid-cols-2 gap-8">
+          {judgeHighlights.map((section, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6"
+            >
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                <Award className="h-5 w-5 text-yellow-500" />
+                <span>{section.category}</span>
+              </h3>
+              
+              <ul className="space-y-3">
+                {section.points.map((point, idx) => (
+                  <li key={idx} className="flex items-start space-x-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Live Demo Section */}
+      <section className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white text-center">
+        <h2 className="text-3xl font-bold mb-4">
+          Ready for a Live Demo?
+        </h2>
+        <p className="text-xl mb-8 opacity-90">
+          Experience the full autonomous AI agent system with real genomics data
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            to="/analysis"
+            className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
+          >
+            <Dna className="h-5 w-5" />
+            <span>Start Live Analysis</span>
+          </Link>
+          
+          <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all duration-200 flex items-center justify-center space-x-2">
+            <ExternalLink className="h-5 w-5" />
+            <span>View Architecture</span>
+          </button>
+        </div>
+      </section>
+
+      {/* Technical Architecture Preview */}
+      <section className="bg-white rounded-2xl shadow-lg p-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            System Architecture Overview
+          </h2>
+          <p className="text-lg text-gray-600">
+            Multi-agent autonomous system built on AWS
+          </p>
+        </div>
+        
+        <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-8">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Brain className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Agents</h3>
+              <p className="text-gray-600 text-sm">
+                5 specialized agents working autonomously with Bedrock LLMs
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">AWS Services</h3>
+              <p className="text-gray-600 text-sm">
+                Lambda, Bedrock, API Gateway, DynamoDB, S3, CloudWatch
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Clinical Output</h3>
+              <p className="text-gray-600 text-sm">
+                Medical-grade reports with treatment recommendations
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default DemoPage;
