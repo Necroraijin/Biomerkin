@@ -7,6 +7,7 @@ import AnalysisPage from './pages/AnalysisPage';
 import ResultsPage from './pages/ResultsPage';
 import DemoPage from './pages/DemoPage';
 import AboutPage from './pages/AboutPage';
+import CostPage from './pages/CostPage';
 import './App.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/analysis" element={<AnalysisPage />} />
             <Route path="/results/:workflowId" element={<ResultsPage />} />
             <Route path="/demo" element={<DemoPage />} />
+            <Route path="/cost" element={<CostPage />} />
             <Route path="/about" element={<AboutPage />} />
           </Routes>
         </motion.main>

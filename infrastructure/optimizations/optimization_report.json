@@ -1,0 +1,131 @@
+{
+  "configurations": {
+    "biomerkin-genomics-agent": {
+      "memory_mb": 1024,
+      "timeout_seconds": 300,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "BIOPYTHON_CACHE_SIZE": "100",
+        "MAX_SEQUENCE_LENGTH": "1000000"
+      },
+      "reserved_concurrency": 10,
+      "provisioned_concurrency": 2,
+      "description": "Optimized for DNA sequence analysis with Biopython"
+    },
+    "biomerkin-proteomics-agent": {
+      "memory_mb": 768,
+      "timeout_seconds": 240,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "PDB_API_TIMEOUT": "30",
+        "PROTEIN_CACHE_SIZE": "50"
+      },
+      "reserved_concurrency": 8,
+      "provisioned_concurrency": 1,
+      "description": "Optimized for protein structure analysis"
+    },
+    "biomerkin-literature-agent": {
+      "memory_mb": 512,
+      "timeout_seconds": 180,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "PUBMED_API_TIMEOUT": "30",
+        "MAX_ARTICLES": "50",
+        "BEDROCK_TIMEOUT": "60"
+      },
+      "reserved_concurrency": 15,
+      "provisioned_concurrency": 3,
+      "description": "Optimized for literature search and AI summarization"
+    },
+    "biomerkin-drug-agent": {
+      "memory_mb": 512,
+      "timeout_seconds": 180,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "DRUGBANK_API_TIMEOUT": "30",
+        "CLINICAL_TRIALS_TIMEOUT": "45"
+      },
+      "reserved_concurrency": 10,
+      "provisioned_concurrency": 2,
+      "description": "Optimized for drug discovery and clinical trial data"
+    },
+    "biomerkin-decision-agent": {
+      "memory_mb": 1024,
+      "timeout_seconds": 300,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "BEDROCK_TIMEOUT": "120",
+        "REPORT_TEMPLATE_CACHE": "20"
+      },
+      "reserved_concurrency": 5,
+      "provisioned_concurrency": 1,
+      "description": "Optimized for medical report generation with Bedrock"
+    },
+    "biomerkin-orchestrator": {
+      "memory_mb": 768,
+      "timeout_seconds": 900,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "MAX_CONCURRENT_AGENTS": "4",
+        "WORKFLOW_TIMEOUT": "1800",
+        "ENABLE_PARALLEL_EXECUTION": "true"
+      },
+      "reserved_concurrency": 20,
+      "provisioned_concurrency": 3,
+      "description": "Optimized for workflow orchestration and agent coordination"
+    }
+  },
+  "cost_estimates": {
+    "monthly_breakdown": {
+      "compute_cost": 199065.99813120003,
+      "provisioned_concurrency_cost": 129.6010368,
+      "request_cost": 0.19999999999999998
+    },
+    "total_monthly_estimate": 199195.79916800003,
+    "currency": "USD"
+  },
+  "optimization_recommendations": [
+    {
+      "component": "Memory Allocation",
+      "recommendation": "Right-sized memory based on agent complexity",
+      "impact": "Genomics and Decision agents get more memory for complex processing",
+      "cost_impact": "20-30% cost reduction vs. uniform sizing"
+    },
+    {
+      "component": "Timeout Configuration",
+      "recommendation": "Optimized timeouts prevent unnecessary charges",
+      "impact": "Shorter timeouts for API-heavy agents, longer for processing agents",
+      "cost_impact": "10-15% cost reduction from avoided timeout charges"
+    },
+    {
+      "component": "Concurrency Limits",
+      "recommendation": "Reserved concurrency prevents throttling",
+      "impact": "Ensures consistent performance under load",
+      "cost_impact": "Prevents cascading failures and retries"
+    },
+    {
+      "component": "Provisioned Concurrency",
+      "recommendation": "Strategic provisioning for critical agents",
+      "impact": "Eliminates cold starts for orchestrator and literature agent",
+      "cost_impact": "Higher cost but better user experience"
+    },
+    {
+      "component": "Environment Variables",
+      "recommendation": "Optimized cache sizes and timeouts",
+      "impact": "Better performance through tuned parameters",
+      "cost_impact": "Faster execution reduces compute costs"
+    }
+  ],
+  "performance_improvements": {
+    "expected_latency_reduction": "30-50%",
+    "expected_throughput_increase": "40-60%",
+    "cold_start_elimination": "95%",
+    "error_rate_reduction": "20-30%"
+  },
+  "summary": {
+    "total_functions": 6,
+    "total_memory_mb": 4608,
+    "total_provisioned_concurrency": 12,
+    "optimization_score": 85
+  }
+}

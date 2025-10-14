@@ -1,0 +1,177 @@
+{
+  "timestamp": "2025-10-14T22:23:04.236024",
+  "tests_run": 35,
+  "tests_passed": 29,
+  "tests_failed": 6,
+  "failures": [
+    {
+      "test": "Data Models",
+      "error": "Mutation.__init__() got an unexpected keyword argument 'id'"
+    },
+    {
+      "test": "GenomicsAgent",
+      "error": "Sequence file not found: test_sequence.fasta"
+    },
+    {
+      "test": "ProteomicsAgent",
+      "error": "ProteinStructure.__init__() got an unexpected keyword argument 'protein_id'"
+    },
+    {
+      "test": "LiteratureAgent",
+      "error": "QualityMetrics.__init__() missing 2 required positional arguments: 'coverage_depth' and 'confidence_level'"
+    },
+    {
+      "test": "Error Handling",
+      "error": "Unhandled exception: Either sequence_file or sequence_data is required in input_data"
+    },
+    {
+      "test": "Package: biopython",
+      "error": "Package not available"
+    }
+  ],
+  "detailed_results": {
+    "AWS Configuration": {
+      "status": "PASS",
+      "details": "Region: us-east-1"
+    },
+    "API Configuration": {
+      "status": "PASS",
+      "details": "API config loaded"
+    },
+    "Database Configuration": {
+      "status": "PASS",
+      "details": "Table: biomerkin-workflows"
+    },
+    "Data Models": {
+      "status": "FAIL",
+      "details": "Mutation.__init__() got an unexpected keyword argument 'id'"
+    },
+    "GenomicsAgent": {
+      "status": "FAIL",
+      "details": "Sequence file not found: test_sequence.fasta"
+    },
+    "ProteomicsAgent": {
+      "status": "FAIL",
+      "details": "ProteinStructure.__init__() got an unexpected keyword argument 'protein_id'"
+    },
+    "LiteratureAgent": {
+      "status": "FAIL",
+      "details": "QualityMetrics.__init__() missing 2 required positional arguments: 'coverage_depth' and 'confidence_level'"
+    },
+    "DrugAgent": {
+      "status": "PASS",
+      "details": "Agent executed successfully"
+    },
+    "DecisionAgent": {
+      "status": "PASS",
+      "details": "Agent initialized successfully"
+    },
+    "Workflow Creation": {
+      "status": "PASS",
+      "details": "Workflow ID: workflow_18fe41ab"
+    },
+    "Enhanced Orchestrator": {
+      "status": "PASS",
+      "details": "Status: {'orchestrator_type': 'enhanced', 'strands_available': True, 'strands_enabled': True, 'timestamp': '2025-10-14T22:23:08.569903', 'agents_created': 3, 'agent_names': ['genomics', 'literature', 'decision'], 'model_available': True}"
+    },
+    "Demo Scenarios Creation": {
+      "status": "PASS",
+      "details": "Created 3 scenarios"
+    },
+    "Scenario Data: brca1_cancer_risk": {
+      "status": "PASS",
+      "details": "Data generated successfully"
+    },
+    "Scenario Data: covid_drug_discovery": {
+      "status": "PASS",
+      "details": "Data generated successfully"
+    },
+    "Scenario Data: rare_disease_diagnosis": {
+      "status": "PASS",
+      "details": "Data generated successfully"
+    },
+    "Presentation Materials": {
+      "status": "PASS",
+      "details": "Materials created successfully"
+    },
+    "Async Demo Execution": {
+      "status": "PASS",
+      "details": "Demo executed successfully"
+    },
+    "Error Handling": {
+      "status": "FAIL",
+      "details": "Unhandled exception: Either sequence_file or sequence_data is required in input_data"
+    },
+    "Config File Loading": {
+      "status": "PASS",
+      "details": "Configuration loaded successfully"
+    },
+    "Demo Files": {
+      "status": "PASS",
+      "details": "Found 5 demo files"
+    },
+    "Package: boto3": {
+      "status": "PASS",
+      "details": "Package imported successfully"
+    },
+    "Package: biopython": {
+      "status": "FAIL",
+      "details": "Package not available"
+    },
+    "Package: requests": {
+      "status": "PASS",
+      "details": "Package imported successfully"
+    },
+    "Package: pandas": {
+      "status": "PASS",
+      "details": "Package imported successfully"
+    },
+    "Package: numpy": {
+      "status": "PASS",
+      "details": "Package imported successfully"
+    },
+    "API Structure: GenomicsAgent": {
+      "status": "PASS",
+      "details": "Execute method available"
+    },
+    "API Structure: ProteomicsAgent": {
+      "status": "PASS",
+      "details": "Execute method available"
+    },
+    "API Structure: LiteratureAgent": {
+      "status": "PASS",
+      "details": "Execute method available"
+    },
+    "API Structure: DrugAgent": {
+      "status": "PASS",
+      "details": "Execute method available"
+    },
+    "API Structure: DecisionAgent": {
+      "status": "PASS",
+      "details": "Execute method available"
+    },
+    "Frontend File: App.js": {
+      "status": "PASS",
+      "details": "File exists"
+    },
+    "Frontend File: DemoPage.js": {
+      "status": "PASS",
+      "details": "File exists"
+    },
+    "Frontend File: api.js": {
+      "status": "PASS",
+      "details": "File exists"
+    },
+    "Frontend File: package.json": {
+      "status": "PASS",
+      "details": "File exists"
+    },
+    "Frontend Build": {
+      "status": "PASS",
+      "details": "Build directory exists"
+    }
+  },
+  "deployment_status": "NOT_READY",
+  "critical_tests_passed": 4,
+  "critical_tests_total": 7
+}

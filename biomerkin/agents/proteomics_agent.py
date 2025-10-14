@@ -799,6 +799,89 @@ class ProteomicsAgent:
         self.logger.error(f"All {self.max_retries} attempts failed for {url}")
         return None
     
+
+
+    def analyze_proteins(self, genomics_results=None, protein_sequences=None):
+        """
+        Analyze proteins from genomics results or sequences.
+        
+        Args:
+            genomics_results: GenomicsResults object
+            protein_sequences: List of protein sequences
+            
+        Returns:
+            ProteomicsResults object
+        """
+        from biomerkin.models.proteomics import ProteomicsResults, ProteinStructure, FunctionAnnotation, ProteinDomain
+        
+        # Mock implementation for testing
+        protein_structures = []
+        functional_annotations = []
+        domains = []
+        
+        if genomics_results:
+            for gene in genomics_results.genes:
+                # Create mock protein structure
+                structure = ProteinStructure(
+                    protein_id=gene.id,
+                    name=gene.name,
+                    length=1000,  # Mock length
+                    secondary_structure={},
+                    confidence_score=0.8
+                )
+                protein_structures.append(structure)
+                
+                # Create mock functional annotation
+                annotation = FunctionAnnotation(
+                    description=gene.function or "Unknown function",
+                    confidence_score=gene.confidence_score,
+                    source="Mock analysis"
+                )
+                functional_annotations.append(annotation)
+        
+        if protein_sequences:
+            for i, seq in enumerate(protein_sequences):
+                structure = ProteinStructure(
+                    protein_id=f"protein_{i}",
+                    name=f"Protein_{i}",
+                    length=len(seq),
+                    secondary_structure={},
+                    confidence_score=0.8
+                )
+                protein_structures.append(structure)
+        
+        return ProteomicsResults(
+            protein_structures=protein_structures,
+            functional_annotations=functional_annotations,
+            domains=domains
+        )
+
+    def execute(self, input_data: Dict[str, Any], workflow_id: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Execute proteomics analysis.
+        
+        Args:
+            input_data: Dictionary containing genomics_results and optional protein_sequences
+            workflow_id: Optional workflow identifier
+            
+        Returns:
+            Dictionary containing proteomics analysis results
+        """
+        genomics_results = input_data.get('genomics_results')
+        protein_sequences = input_data.get('protein_sequences', [])
+        
+        if not genomics_results and not protein_sequences:
+            raise ValueError("Either genomics_results or protein_sequences is required in input_data")
+        
+        results = self.analyze_proteins(genomics_results, protein_sequences)
+        
+        return {
+            'proteomics_results': results,
+            'protein_structures': results.protein_structures if results else [],
+            'functional_annotations': results.functional_annotations if results else [],
+            'domains': results.domains if results else []
+        }
+
     def __del__(self):
         """Cleanup session on deletion."""
         if hasattr(self, 'session'):

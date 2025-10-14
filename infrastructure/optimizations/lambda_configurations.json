@@ -1,0 +1,76 @@
+{
+  "biomerkin-genomics-agent": {
+    "memory_mb": 1024,
+    "timeout_seconds": 300,
+    "environment_variables": {
+      "PYTHONPATH": "/var/task",
+      "BIOPYTHON_CACHE_SIZE": "100",
+      "MAX_SEQUENCE_LENGTH": "1000000"
+    },
+    "reserved_concurrency": 10,
+    "provisioned_concurrency": 2,
+    "description": "Optimized for DNA sequence analysis with Biopython"
+  },
+  "biomerkin-proteomics-agent": {
+    "memory_mb": 768,
+    "timeout_seconds": 240,
+    "environment_variables": {
+      "PYTHONPATH": "/var/task",
+      "PDB_API_TIMEOUT": "30",
+      "PROTEIN_CACHE_SIZE": "50"
+    },
+    "reserved_concurrency": 8,
+    "provisioned_concurrency": 1,
+    "description": "Optimized for protein structure analysis"
+  },
+  "biomerkin-literature-agent": {
+    "memory_mb": 512,
+    "timeout_seconds": 180,
+    "environment_variables": {
+      "PYTHONPATH": "/var/task",
+      "PUBMED_API_TIMEOUT": "30",
+      "MAX_ARTICLES": "50",
+      "BEDROCK_TIMEOUT": "60"
+    },
+    "reserved_concurrency": 15,
+    "provisioned_concurrency": 3,
+    "description": "Optimized for literature search and AI summarization"
+  },
+  "biomerkin-drug-agent": {
+    "memory_mb": 512,
+    "timeout_seconds": 180,
+    "environment_variables": {
+      "PYTHONPATH": "/var/task",
+      "DRUGBANK_API_TIMEOUT": "30",
+      "CLINICAL_TRIALS_TIMEOUT": "45"
+    },
+    "reserved_concurrency": 10,
+    "provisioned_concurrency": 2,
+    "description": "Optimized for drug discovery and clinical trial data"
+  },
+  "biomerkin-decision-agent": {
+    "memory_mb": 1024,
+    "timeout_seconds": 300,
+    "environment_variables": {
+      "PYTHONPATH": "/var/task",
+      "BEDROCK_TIMEOUT": "120",
+      "REPORT_TEMPLATE_CACHE": "20"
+    },
+    "reserved_concurrency": 5,
+    "provisioned_concurrency": 1,
+    "description": "Optimized for medical report generation with Bedrock"
+  },
+  "biomerkin-orchestrator": {
+    "memory_mb": 768,
+    "timeout_seconds": 900,
+    "environment_variables": {
+      "PYTHONPATH": "/var/task",
+      "MAX_CONCURRENT_AGENTS": "4",
+      "WORKFLOW_TIMEOUT": "1800",
+      "ENABLE_PARALLEL_EXECUTION": "true"
+    },
+    "reserved_concurrency": 20,
+    "provisioned_concurrency": 3,
+    "description": "Optimized for workflow orchestration and agent coordination"
+  }
+}

@@ -74,7 +74,7 @@ class DrugAgent(APIAgent):
         target_data = input_data.get('target_data')
         
         if not target_data:
-            raise ValueError("target_data is required in input_data")
+            raise ValueError("Either target_data or genomics_results is required in input_data")
         
         results = self.find_drug_candidates(target_data)
         

@@ -1,0 +1,184 @@
+Metadata-Version: 2.4
+Name: biomerkin
+Version: 0.1.0
+Summary: Multi-agent bioinformatics assistant for genomic analysis and treatment recommendations
+Home-page: https://github.com/biomerkin/biomerkin-multi-agent-system
+Author: Biomerkin Team
+Author-email: team@biomerkin.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: biopython>=1.81
+Requires-Dist: boto3>=1.28.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: boto3>=1.28.0
+Requires-Dist: botocore>=1.31.0
+Requires-Dist: httpx>=0.24.0
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: structlog>=23.1.0
+Requires-Dist: pytest>=7.4.0
+Requires-Dist: pytest-asyncio>=0.21.0
+Requires-Dist: pytest-mock>=3.11.0
+Requires-Dist: moto>=4.2.0
+Requires-Dist: black>=23.0.0
+Requires-Dist: flake8>=6.0.0
+Requires-Dist: mypy>=1.5.0
+Requires-Dist: pre-commit>=3.3.0
+Requires-Dist: cryptography>=41.0.0
+Requires-Dist: redis>=4.6.0
+Requires-Dist: psutil>=5.9.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: pytest-mock>=3.11.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.5.0; extra == "dev"
+Requires-Dist: pre-commit>=3.3.0; extra == "dev"
+Provides-Extra: aws
+Requires-Dist: moto>=4.2.0; extra == "aws"
+Provides-Extra: cache
+Requires-Dist: redis>=4.6.0; extra == "cache"
+Provides-Extra: monitoring
+Requires-Dist: psutil>=5.9.0; extra == "monitoring"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Biomerkin Multi-Agent Bioinformatics System
+
+Biomerkin is a cloud-native multi-agent bioinformatics system built on AWS infrastructure that orchestrates specialized agents to analyze DNA sequences, predict protein structures, research literature, identify drug candidates, and generate comprehensive medical reports.
+
+## Features
+
+- **GenomicsAgent**: DNA sequence analysis using Biopython
+- **ProteomicsAgent**: Protein structure and function analysis via PDB API
+- **LiteratureAgent**: Scientific literature research and AI-powered summarization
+- **DrugAgent**: Drug discovery and clinical trial information
+- **DecisionAgent**: Comprehensive medical report generation
+- **AWS Integration**: Leverages Lambda, Bedrock, S3, and DynamoDB
+- **Scalable Architecture**: Serverless, event-driven processing
+
+## Project Structure
+
+```
+biomerkin/
+├── agents/          # Specialized analysis agents
+├── models/          # Data models and structures
+├── services/        # External API integrations
+├── utils/           # Utilities and common functionality
+└── __init__.py
+```
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/biomerkin/biomerkin-multi-agent-system.git
+cd biomerkin-multi-agent-system
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install the package
+pip install -e .
+```
+
+## Configuration
+
+Create a configuration file or set environment variables:
+
+```python
+from biomerkin.utils import create_sample_config
+
+# Create a sample configuration file
+create_sample_config('./biomerkin_config.json')
+```
+
+Required environment variables:
+- `AWS_REGION`: AWS region for services
+- `PUBMED_EMAIL`: Email for PubMed API access
+- `BEDROCK_MODEL_ID`: Amazon Bedrock model identifier
+- `S3_BUCKET_NAME`: S3 bucket for data storage
+- `DYNAMODB_TABLE_NAME`: DynamoDB table for workflow state
+
+## Usage
+
+```python
+from biomerkin.models import WorkflowState, GenomicsResults
+from biomerkin.utils import get_config
+
+# Load configuration
+config = get_config()
+
+# Create and run analysis workflow
+# (Implementation details in subsequent tasks)
+```
+
+## Data Models
+
+The system includes comprehensive data models for:
+
+- **Genomics**: Genes, mutations, protein sequences
+- **Proteomics**: Protein structures, functional annotations, domains
+- **Literature**: Articles, study summaries, research insights
+- **Drug Discovery**: Drug candidates, clinical trials, interactions
+- **Medical Reports**: Risk assessments, treatment recommendations
+
+## Development
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest
+
+# Format code
+black biomerkin/
+
+# Type checking
+mypy biomerkin/
+```
+
+## Architecture
+
+The system follows a multi-agent architecture with:
+
+1. **Orchestration Layer**: Manages workflow execution
+2. **Agent Layer**: Specialized analysis agents
+3. **Compute Layer**: AWS Lambda functions
+4. **AI Layer**: Amazon Bedrock for LLM capabilities
+5. **Storage Layer**: S3 and DynamoDB
+6. **External APIs**: PubMed, PDB, DrugBank, ClinicalTrials.gov
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Contributing
+
+Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.
+
+## AWS Hackathon
+
+This project is developed for the AWS Agent Hackathon, demonstrating the power of multi-agent systems in bioinformatics and healthcare applications.

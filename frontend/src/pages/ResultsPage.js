@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import * as THREE from 'three';
 import { 
   FileText, 
   Download, 
@@ -42,6 +43,7 @@ import { analysisService, handleApiError } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import GenomicsVisualization from '../components/GenomicsVisualization';
 import MedicalReportViewer from '../components/MedicalReportViewer';
+import Protein3DViewer from '../components/Protein3DViewer';
 
 const ResultsPage = () => {
   const { workflowId } = useParams();
@@ -459,6 +461,43 @@ Based on the identified variants, PARP inhibitor therapy may be particularly eff
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6"
             >
+              {/* 3D Protein Structure Viewer */}
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">3D Protein Structure</h3>
+                <Protein3DViewer 
+                  proteinData={{
+                    name: 'BRCA1',
+                    length: 1863,
+                    secondary_structure: {
+                      helices: [
+                        { x: 0, y: 0, z: 0, length: 15, rx: 0, ry: 0, rz: 0 },
+                        { x: 20, y: 5, z: 10, length: 12, rx: 0.5, ry: 0.3, rz: 0.2 }
+                      ],
+                      sheets: [
+                        { x: 10, y: 0, z: 5, length: 8, rx: 0, ry: 0, rz: 0.5 }
+                      ],
+                      loops: [
+                        { points: [
+                          new THREE.Vector3(0, 0, 0),
+                          new THREE.Vector3(5, 5, 5),
+                          new THREE.Vector3(10, 0, 10)
+                        ]}
+                      ]
+                    },
+                    domains: [
+                      { name: 'RING', x: 0, y: 0, z: 0, radius: 8 },
+                      { name: 'BRCT', x: 15, y: 0, z: 0, radius: 10 }
+                    ],
+                    binding_sites: [
+                      { x: 5, y: 5, z: 5 },
+                      { x: 12, y: 8, z: 3 }
+                    ]
+                  }}
+                  width={800}
+                  height={400}
+                />
+              </div>
+
               <div className="grid lg:grid-cols-2 gap-6">
                 <div className="bg-white border border-gray-200 rounded-lg p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Protein Structures</h3>

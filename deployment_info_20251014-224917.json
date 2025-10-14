@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-10-14T22:49:17.982472",
+  "resources_created": [
+    "S3 Bucket: biomerkin-frontend-20251014-224917",
+    "Lambda Function: biomerkin-genomics-agent",
+    "Lambda Function: biomerkin-proteomics-agent",
+    "Lambda Function: biomerkin-literature-agent",
+    "Lambda Function: biomerkin-drug-agent",
+    "Lambda Function: biomerkin-decision-agent",
+    "API Gateway: biomerkin-api"
+  ],
+  "endpoints": {
+    "frontend": "http://biomerkin-frontend-20251014-224917.s3-website-us-east-1.amazonaws.com",
+    "api": "https://udu8m3n0lh.execute-api.us-east-1.amazonaws.com/prod"
+  },
+  "errors": []
+}

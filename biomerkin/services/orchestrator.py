@@ -771,6 +771,36 @@ class WorkflowOrchestrator:
         """
         return self.execution_metrics.get(workflow_id)
     
+
+    def create_workflow(self, sequence_data: str, workflow_type: str = "genomics_analysis") -> str:
+        """
+        Create a new workflow.
+        
+        Args:
+            sequence_data: Input sequence data
+            workflow_type: Type of workflow to create
+            
+        Returns:
+            Workflow ID
+        """
+        import uuid
+        
+        workflow_id = f"workflow_{uuid.uuid4().hex[:8]}"
+        
+        # Store workflow in state (mock implementation)
+        workflow_state = {
+            'workflow_id': workflow_id,
+            'sequence_data': sequence_data,
+            'workflow_type': workflow_type,
+            'status': 'created',
+            'created_at': datetime.now().isoformat()
+        }
+        
+        # In a real implementation, this would be stored in DynamoDB
+        self.logger.info(f"Created workflow: {workflow_id}")
+        
+        return workflow_id
+
     def get_performance_summary(self) -> Dict[str, Any]:
         """
         Get a summary of performance metrics across all workflows.

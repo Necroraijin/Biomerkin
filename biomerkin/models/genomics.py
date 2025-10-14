@@ -12,9 +12,9 @@ class Gene:
     """Represents a gene identified in genomic analysis."""
     id: str
     name: str
-    location: GenomicLocation
     function: str
     confidence_score: float
+    location: Optional[GenomicLocation] = None
     gene_type: Optional[str] = None
     synonyms: Optional[List[str]] = None
 

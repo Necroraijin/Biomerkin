@@ -27,6 +27,10 @@ class MutationType(Enum):
     INSERTION = "insertion"
     DELETION = "deletion"
     SUBSTITUTION = "substitution"
+    FRAMESHIFT = "frameshift"
+    MISSENSE = "missense"
+    NONSENSE = "nonsense"
+    SILENT = "silent"
     INVERSION = "inversion"
     TRANSLOCATION = "translocation"
 
@@ -46,6 +50,8 @@ class QualityMetrics:
     coverage_depth: float
     quality_score: float
     confidence_level: float
+    coverage: float
+    accuracy: float
     error_rate: Optional[float] = None
 
 

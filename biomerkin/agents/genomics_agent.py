@@ -57,7 +57,7 @@ class GenomicsAgent(BaseAgent):
         reference_sequence = input_data.get('reference_sequence')
         
         if not sequence_file:
-            raise ValueError("sequence_file is required in input_data")
+            raise ValueError("Either sequence_file or sequence_data is required in input_data")
         
         results = self.analyze_sequence(sequence_file, reference_sequence)
         

@@ -13,6 +13,8 @@ import asyncio
 from datetime import datetime
 
 from .services.orchestrator import WorkflowOrchestrator
+from .services.enhanced_orchestrator import get_enhanced_orchestrator
+from .services.cost_optimization_service import get_cost_optimization_service
 from .models import WorkflowState, AnalysisResults
 from .utils.config import get_config
 from .utils.logging_config import get_logger
@@ -26,6 +28,8 @@ class BiomerkinCLI:
         self.logger = get_logger(__name__)
         self.config = get_config()
         self.orchestrator = WorkflowOrchestrator()
+        self.enhanced_orchestrator = get_enhanced_orchestrator()
+        self.cost_service = get_cost_optimization_service()
     
     def analyze(self, args) -> None:
         """Run bioinformatics analysis workflow."""
@@ -44,8 +48,12 @@ class BiomerkinCLI:
             print(f"📋 Workflow ID: {workflow_id}")
             print("🔄 Initializing agents...")
             
-            # Start analysis workflow
-            result = asyncio.run(self._run_analysis(workflow_id, args.sequence_file))
+            # Check if enhanced mode is requested
+            if hasattr(args, 'enhanced') and args.enhanced:
+                print("🚀 Using Enhanced Mode with AWS Strands Agents...")
+                result = asyncio.run(self._run_enhanced_analysis(workflow_id, args.sequence_file))
+            else:
+                result = asyncio.run(self._run_analysis(workflow_id, args.sequence_file))
             
             if result.success:
                 print("✅ Analysis completed successfully!")
@@ -68,12 +76,40 @@ class BiomerkinCLI:
         workflow_state = WorkflowState(
             workflow_id=workflow_id,
             status="running",
+            current_agent="orchestrator",
+            progress_percentage=0.0,
             input_data={"sequence_file": sequence_file},
-            created_at=datetime.now()
+            results={},
+            errors=[],
+            created_at=datetime.now(),
+            updated_at=datetime.now()
         )
         
         # Run orchestrator
         result = await self.orchestrator.execute_workflow(workflow_state)
+        return result
+    
+    async def _run_enhanced_analysis(self, workflow_id: str, sequence_file: str) -> AnalysisResults:
+        """Run enhanced analysis workflow with Strands Agents."""
+        # Create workflow state
+        workflow_state = WorkflowState(
+            workflow_id=workflow_id,
+            status="running",
+            current_agent="enhanced_orchestrator",
+            progress_percentage=0.0,
+            input_data={
+                "sequence_file": sequence_file,
+                "enhanced_mode": True,
+                "enable_strands": True
+            },
+            results={},
+            errors=[],
+            created_at=datetime.now(),
+            updated_at=datetime.now()
+        )
+        
+        # Run enhanced orchestrator
+        result = await self.enhanced_orchestrator.execute_enhanced_workflow(workflow_state)
         return result
     
     def _display_summary(self, results) -> None:
@@ -98,13 +134,13 @@ class BiomerkinCLI:
     
     def status(self, args) -> None:
         """Check system status."""
-        print("🔍 Biomerkin System Status")
+        print("Biomerkin System Status")
         print("=" * 30)
         
         # Check configuration
-        print(f"✅ Configuration: Loaded")
-        print(f"📍 AWS Region: {self.config.aws.region}")
-        print(f"🤖 Bedrock Model: {self.config.aws.bedrock_model_id}")
+        print(f"[OK] Configuration: Loaded")
+        print(f"[INFO] AWS Region: {self.config.aws.region}")
+        print(f"[INFO] Bedrock Model: {self.config.aws.bedrock_model_id}")
         
         # Check services
         try:
@@ -112,14 +148,24 @@ class BiomerkinCLI:
             import boto3
             sts = boto3.client('sts')
             identity = sts.get_caller_identity()
-            print(f"✅ AWS Connection: {identity.get('Arn', 'Connected')}")
+            print(f"[OK] AWS Connection: {identity.get('Arn', 'Connected')}")
         except Exception as e:
-            print(f"❌ AWS Connection: {str(e)}")
+            print(f"[ERROR] AWS Connection: {str(e)}")
         
         # Check agents
         agents = ["GenomicsAgent", "ProteomicsAgent", "LiteratureAgent", "DrugAgent", "DecisionAgent"]
         for agent in agents:
-            print(f"✅ {agent}: Available")
+            print(f"[OK] {agent}: Available")
+        
+        # Check enhanced orchestrator status
+        try:
+            enhanced_status = self.enhanced_orchestrator.get_enhanced_status()
+            print(f"[INFO] Enhanced Orchestrator: {'Enabled' if enhanced_status.get('strands_enabled') else 'Disabled'}")
+            if enhanced_status.get('strands_enabled'):
+                print(f"[INFO] Strands Agents: {enhanced_status.get('active_agents', 0)} active")
+                print(f"[INFO] Model Providers: {', '.join(enhanced_status.get('model_providers', []))}")
+        except Exception as e:
+            print(f"[WARNING] Enhanced Orchestrator: {str(e)}")
     
     def config_cmd(self, args) -> None:
         """Manage configuration."""
@@ -196,6 +242,93 @@ class BiomerkinCLI:
         except subprocess.CalledProcessError as e:
             print(f"❌ Deployment failed: {e}")
             sys.exit(1)
+    
+    def demo(self, args) -> None:
+        """Run enhanced demo with Strands Agents."""
+        print("🎬 Running Enhanced Demo...")
+        
+        try:
+            import subprocess
+            import sys
+            
+            # Run the enhanced demo script
+            demo_script = Path(__file__).parent.parent / "scripts" / "demo_enhanced_workflow.py"
+            
+            if not demo_script.exists():
+                print(f"[ERROR] Demo script not found: {demo_script}")
+                sys.exit(1)
+            
+            print(f"[STARTING] Starting {args.type} demo...")
+            subprocess.run([sys.executable, str(demo_script)], check=True)
+            print("[SUCCESS] Demo completed successfully!")
+            
+        except subprocess.CalledProcessError as e:
+            print(f"[ERROR] Demo failed: {e}")
+            sys.exit(1)
+        except Exception as e:
+            print(f"[ERROR] Error running demo: {e}")
+            sys.exit(1)
+    
+    def cost_dashboard(self, args) -> None:
+        """Display cost optimization dashboard."""
+        print("[COST] Biomerkin Cost Optimization Dashboard")
+        print("=" * 50)
+        
+        try:
+            # Get dashboard data
+            dashboard_data = self.cost_service.get_cost_dashboard_data()
+            
+            if 'error' in dashboard_data:
+                print(f"[ERROR] Error retrieving cost data: {dashboard_data['error']}")
+                return
+            
+            # Display current costs
+            current_costs = dashboard_data['current_costs']
+            print(f"\n[COSTS] Current Costs (Last 7 days):")
+            print(f"   Total: ${current_costs['total_cost']:.2f} {current_costs['currency']}")
+            print(f"   Services:")
+            for service, cost in current_costs['service_breakdown'].items():
+                print(f"     * {service}: ${cost:.2f}")
+            
+            # Display cost trends
+            trends = dashboard_data['cost_trends']
+            print(f"\n[TRENDS] Cost Trends (Last 30 days):")
+            print(f"   Trend: {trends['trend']}")
+            print(f"   Change: {trends['change_percent']:.1f}%")
+            avg_daily = trends.get('average_daily_cost', 0.0)
+            print(f"   Average Daily: ${avg_daily:.2f}")
+            
+            # Display optimization recommendations
+            recommendations = dashboard_data['optimization_recommendations']
+            print(f"\n[RECOMMENDATIONS] Optimization Recommendations:")
+            total_savings = 0
+            for rec in recommendations:
+                print(f"   * {rec['service']}: {rec['description']}")
+                print(f"     Potential Savings: ${rec['potential_savings']:.2f}")
+                print(f"     Priority: {rec['priority']}, Effort: {rec['effort']}")
+                total_savings += rec['potential_savings']
+            
+            print(f"\n[SAVINGS] Total Potential Savings: ${total_savings:.2f}")
+            
+            # Display budget alerts
+            alerts = dashboard_data['budget_alerts']
+            if alerts:
+                print(f"\n[ALERTS] Budget Alerts:")
+                for alert in alerts:
+                    print(f"   * {alert['budget_name']}: {alert['severity']} severity")
+                    print(f"     Threshold: {alert['threshold']}%, Current: ${alert['current_spend']:.2f}")
+            
+            # Display summary
+            summary = dashboard_data['summary']
+            print(f"\n[SUMMARY] Summary:")
+            print(f"   Optimization Score: {summary['optimization_score']:.0f}/100")
+            print(f"   Recommendations: {summary['recommendations_count']}")
+            print(f"   Active Alerts: {summary['alerts_count']}")
+            print(f"   Last Updated: {summary['last_updated']}")
+            
+        except Exception as e:
+            print(f"[ERROR] Error displaying cost dashboard: {e}")
+            sys.exit(1)
 
 
 def main():
@@ -206,9 +339,12 @@ def main():
         epilog="""
 Examples:
   biomerkin analyze sequence.fasta
+  biomerkin analyze sequence.fasta --enhanced
   biomerkin status
   biomerkin config --init
   biomerkin deploy
+  biomerkin demo --type comprehensive
+  biomerkin cost --days 30
         """
     )
     
@@ -219,6 +355,7 @@ Examples:
     analyze_parser.add_argument('sequence_file', help='Path to DNA sequence file (FASTA format)')
     analyze_parser.add_argument('--output', '-o', help='Output directory for results')
     analyze_parser.add_argument('--max-articles', type=int, default=20, help='Maximum articles to analyze')
+    analyze_parser.add_argument('--enhanced', action='store_true', help='Use enhanced mode with AWS Strands Agents')
     
     # Status command
     status_parser = subparsers.add_parser('status', help='Check system status')
@@ -235,6 +372,15 @@ Examples:
     deploy_parser.add_argument('--environment', choices=['dev', 'staging', 'prod'], 
                               default='dev', help='Deployment environment')
     
+    # Demo command
+    demo_parser = subparsers.add_parser('demo', help='Run enhanced demo with Strands Agents')
+    demo_parser.add_argument('--type', choices=['comprehensive', 'handoffs', 'swarm', 'graph'], 
+                            default='comprehensive', help='Type of demo to run')
+    
+    # Cost dashboard command
+    cost_parser = subparsers.add_parser('cost', help='Display cost optimization dashboard')
+    cost_parser.add_argument('--days', type=int, default=7, help='Number of days to analyze costs for')
+    
     args = parser.parse_args()
     
     if not args.command:
@@ -243,13 +389,19 @@ Examples:
     
     try:
         cli = BiomerkinCLI()
-        command_method = getattr(cli, args.command)
+        # Map command names to method names
+        command_mapping = {
+            'cost': 'cost_dashboard',
+            'config': 'config_cmd'
+        }
+        method_name = command_mapping.get(args.command, args.command)
+        command_method = getattr(cli, method_name)
         command_method(args)
     except KeyboardInterrupt:
-        print("\n⏹️ Operation cancelled by user")
+        print("\n[INFO] Operation cancelled by user")
         sys.exit(1)
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f"[ERROR] Error: {str(e)}")
         sys.exit(1)
 
 

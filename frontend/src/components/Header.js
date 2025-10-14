@@ -7,7 +7,8 @@ import {
   X, 
   Brain, 
   Zap,
-  Award
+  Award,
+  DollarSign
 } from 'lucide-react';
 
 const Header = () => {
@@ -18,6 +19,7 @@ const Header = () => {
     { name: 'Home', href: '/', icon: Dna },
     { name: 'Analysis', href: '/analysis', icon: Brain },
     { name: 'Demo', href: '/demo', icon: Zap },
+    { name: 'Cost', href: '/cost', icon: DollarSign },
     { name: 'About', href: '/about', icon: Award }
   ];
 

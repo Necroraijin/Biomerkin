@@ -872,6 +872,39 @@ Format this as a clinical literature review section.
         
         return "\n".join(insights)
     
+
+    def execute(self, input_data: Dict[str, Any], workflow_id: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Execute decision analysis and generate medical report.
+        
+        Args:
+            input_data: Dictionary containing combined analysis results
+            workflow_id: Optional workflow identifier
+            
+        Returns:
+            Dictionary containing medical report and recommendations
+        """
+        from biomerkin.models.analysis import CombinedAnalysis
+        
+        # Create combined analysis from input data
+        combined_analysis = CombinedAnalysis(
+            genomics_results=input_data.get('genomics_results'),
+            proteomics_results=input_data.get('proteomics_results'),
+            literature_results=input_data.get('literature_results'),
+            drug_results=input_data.get('drug_results')
+        )
+        
+        patient_id = input_data.get('patient_id', workflow_id)
+        
+        medical_report = self.generate_medical_report(combined_analysis, patient_id)
+        
+        return {
+            'medical_report': medical_report,
+            'risk_assessment': medical_report.risk_assessment,
+            'treatment_options': medical_report.treatment_options,
+            'drug_recommendations': medical_report.drug_recommendations
+        }
+
     def _create_error_report(self, patient_id: str, error_message: str) -> MedicalReport:
         """Create minimal error report when generation fails."""
         report_id = f"ERR_{uuid.uuid4().hex[:8].upper()}"

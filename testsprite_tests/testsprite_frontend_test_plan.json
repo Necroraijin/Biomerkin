@@ -1,0 +1,299 @@
+[
+  {
+    "id": "TC001",
+    "title": "GenomicsAgent DNA Sequence Analysis Accuracy",
+    "description": "Verify GenomicsAgent correctly identifies genes and known mutations from sample DNA sequences with high accuracy.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Submit a batch of test DNA sequences with known gene and mutation annotations to GenomicsAgent."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that GenomicsAgent output correctly identifies all genes present."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that all known mutations are accurately detected and reported."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm results meet defined accuracy thresholds."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "ProteomicsAgent Protein Structure Retrieval and Visualization",
+    "description": "Ensure ProteomicsAgent successfully retrieves protein structure data from PDB API and renders 3D visualizations without errors.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Request protein structure and functional annotation for a given protein identifier."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate response contains correct PDB structure data."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm 3D protein viewer displays the structure interactively in the frontend."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "LiteratureAgent AI-Powered Scientific Summarization",
+    "description": "Validate LiteratureAgent generates meaningful, concise, and relevant summaries from scientific literature queried via Amazon Bedrock.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Submit multiple scientific article texts and queries to LiteratureAgent."
+      },
+      {
+        "type": "assertion",
+        "description": "Check summary content for accuracy, relevance, and conciseness."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the summaries align well with original article content."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "DrugAgent Drug Candidate and Clinical Trial Retrieval",
+    "description": "Check DrugAgent accurately retrieves drug candidates and relevant clinical trial data matching query parameters.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Perform queries for specified drug classes and therapeutic targets."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate returned drug candidate lists and clinical trials data for correctness and relevance."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm correct handling when no matches are found."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "DecisionAgent Medical Report Generation",
+    "description": "Verify DecisionAgent produces comprehensive, coherent, and clinically relevant medical reports using AI reasoning.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Input combined genomics, proteomics, literature, and drug data to DecisionAgent."
+      },
+      {
+        "type": "assertion",
+        "description": "Check generated medical reports for clinical relevance and actionable insights."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate coherence and completeness with domain expert criteria."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "WorkflowOrchestrator Workflow Coordination and State Management",
+    "description": "Test WorkFlowOrchestrator manages multi-agent execution flow and maintains accurate workflow states in DynamoDB.",
+    "category": "integration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Initiate a complete multi-agent bioinformatics workflow via API."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm orchestrator triggers agents sequentially and monitors their completion."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify workflow state updates in DynamoDB are consistent and accurate at each step."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate successful workflow completion triggers final reporting."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "React Frontend UI Usability and Data Visualization",
+    "description": "Ensure frontend loads promptly, navigates correctly, and displays interactive visualizations and 3D components properly.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Access the React web interface and navigate through all major pages."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that all routes function with no broken links or errors."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify data visualizations render correctly and respond interactively (charts, 3D views)."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate frontend animations load smoothly without glitches."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "AWS Infrastructure Deployment with CDK",
+    "description": "Confirm AWS infrastructure is deployed correctly and monitored via CDK scripts without errors.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Execute infrastructure deployment via AWS CDK stacks."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate all AWS resources are created properly (Lambda, DynamoDB, S3, API Gateway, Redis)."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm monitoring and cost optimization services are integrated and active."
+      },
+      {
+        "type": "assertion",
+        "description": "Check deployment logs for errors or warnings."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Caching System Performance Optimization",
+    "description": "Test caching system with Redis reduces redundant computations and improves response times effectively.",
+    "category": "performance",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run repeated identical analysis requests to relevant agents."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify responses are served faster due to cache hits."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm cache entries are correctly created, updated, and expired following policies."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Error Handling and Recovery in Workflow Execution",
+    "description": "Validate system handles partial failures gracefully with no data loss or inconsistent workflow states.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate errors such as API failures, timeout exceptions, or unavailable services during agent execution."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that error recovery mechanisms attempt retries or fallback procedures."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify user or logs receive informative error messages."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm workflow state consistency is maintained and no partial/workflow corruption occurs."
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "CLI Interface Full Workflow Execution",
+    "description": "Verify complete bioinformatics analysis workflows run successfully via CLI interface and produce results identical to frontend runs.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run full workflow commands from CLI using various input datasets."
+      },
+      {
+        "type": "assertion",
+        "description": "Check workflow completes without errors."
+      },
+      {
+        "type": "assertion",
+        "description": "Compare CLI output results with frontend initiated runs for equivalence."
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Multi-Agent Communication via AWS Strands Agents",
+    "description": "Ensure robust multi-agent communication using AWS Strands Agents integration works as designed.",
+    "category": "integration",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Trigger interactions between multiple agents through Strands Agents messaging."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify messages are delivered reliably and processed correctly by recipient agents."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm no message loss or duplication under normal and high load conditions."
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "System Scalability and Fault Tolerance Under Load",
+    "description": "Test system behavior and reliability under simulated high concurrent requests and agent workloads.",
+    "category": "performance",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate concurrent workflows initiated from multiple users simultaneously."
+      },
+      {
+        "type": "assertion",
+        "description": "Observe system resource utilization and response times remain within acceptable limits."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate no workflow failures occur due to resource exhaustion or concurrency issues."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm error handling triggers as needed and system recovers smoothly."
+      }
+    ]
+  }
+]

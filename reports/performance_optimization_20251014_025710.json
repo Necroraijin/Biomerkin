@@ -1,0 +1,96 @@
+{
+  "timestamp": "2025-10-14T02:57:10.595063",
+  "performance_results": {
+    "GenomicsAgent": {
+      "import_time": 0.6211855411529541,
+      "status": "success"
+    },
+    "WorkflowOrchestrator": {
+      "import_time": 1.3648827075958252,
+      "status": "success"
+    },
+    "get_enhanced_orchestrator": {
+      "import_time": 1.5509634017944336,
+      "status": "success"
+    },
+    "get_cache_manager": {
+      "import_time": 1.0504858493804932,
+      "status": "success"
+    },
+    "get_monitoring_service": {
+      "import_time": 0.0,
+      "status": "success"
+    },
+    "cache": {
+      "put_time_ms": 0.0,
+      "get_time_ms": 0.0,
+      "cache_hit": true
+    },
+    "enhanced_orchestrator": {
+      "status_time_ms": 0.0,
+      "strands_enabled": true,
+      "agents_available": 3
+    },
+    "memory": {
+      "rss_mb": 87.0625,
+      "vms_mb": 296.93359375
+    }
+  },
+  "optimization_recommendations": [
+    {
+      "component": "imports",
+      "issue": "Slow imports detected: WorkflowOrchestrator, get_enhanced_orchestrator, get_cache_manager",
+      "recommendation": "Consider lazy loading or optimizing import dependencies",
+      "priority": "medium",
+      "estimated_improvement": "20-30% faster startup"
+    }
+  ],
+  "lambda_configurations": {
+    "biomerkin-genomics-agent": {
+      "memory_mb": 1024,
+      "timeout_seconds": 300,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "BIOPYTHON_CACHE_SIZE": "100"
+      }
+    },
+    "biomerkin-literature-agent": {
+      "memory_mb": 512,
+      "timeout_seconds": 180,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "BEDROCK_TIMEOUT": "60"
+      }
+    },
+    "biomerkin-drug-agent": {
+      "memory_mb": 512,
+      "timeout_seconds": 180,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "DRUGBANK_API_TIMEOUT": "30"
+      }
+    },
+    "biomerkin-decision-agent": {
+      "memory_mb": 1024,
+      "timeout_seconds": 300,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "BEDROCK_TIMEOUT": "120"
+      }
+    },
+    "biomerkin-orchestrator": {
+      "memory_mb": 768,
+      "timeout_seconds": 900,
+      "environment_variables": {
+        "PYTHONPATH": "/var/task",
+        "MAX_CONCURRENT_AGENTS": "4"
+      }
+    }
+  },
+  "summary": {
+    "total_components_tested": 8,
+    "successful_components": 8,
+    "recommendations_count": 1,
+    "optimization_score": 90
+  }
+}
