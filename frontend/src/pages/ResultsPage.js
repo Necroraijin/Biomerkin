@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 import { 
@@ -47,14 +47,20 @@ import Protein3DViewer from '../components/Protein3DViewer';
 
 const ResultsPage = () => {
   const { workflowId } = useParams();
-  const [results, setResults] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const [results, setResults] = useState(location.state?.results || null);
+  const [loading, setLoading] = useState(!location.state?.results);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [expandedSections, setExpandedSections] = useState({});
 
   useEffect(() => {
-    fetchResults();
+    // Only fetch if we don't have results from navigation state
+    if (!results) {
+      fetchResults();
+    } else {
+      setLoading(false);
+    }
   }, [workflowId]);
 
   const fetchResults = async () => {

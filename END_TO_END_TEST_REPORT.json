@@ -1,0 +1,24 @@
+{
+  "workflow_id": "test_20251017_022917",
+  "test_date": "2025-10-17T02:29:17.081953",
+  "execution_time_seconds": 12.480251,
+  "sequence_length": 207,
+  "agents_status": {
+    "GenomicsAgent": true,
+    "ProteomicsAgent": false,
+    "LiteratureAgent": true,
+    "DrugAgent": true,
+    "DecisionAgent": true
+  },
+  "agents_working": 4,
+  "total_agents": 5,
+  "success_rate": "80.0%",
+  "results": {
+    "genes_found": 0,
+    "mutations_found": 0,
+    "proteins_analyzed": 0,
+    "articles_found": 10,
+    "drugs_found": 2,
+    "report_generated": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "lambda_function": "biomerkin-enhanced-orchestrator",
+  "lambda_arn": "arn:aws:lambda:us-east-1:242201307639:function:biomerkin-enhanced-orchestrator",
+  "api_endpoint": "https://642v46sv19.execute-api.ap-south-1.amazonaws.com/prod",
+  "models": {
+    "primary": "amazon.nova-pro-v1:0",
+    "secondary": "openai.gpt-oss-120b-1:0",
+    "quick": "openai.gpt-oss-20b-1:0"
+  },
+  "features": {
+    "multi_model": true,
+    "real_time": true,
+    "bedrock_agents": true
+  },
+  "region": "us-east-1",
+  "api_region": "ap-south-1"
+}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test - Browser CORS Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+        }
+        .success {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        .error {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 API CORS Test</h1>
+    <p>This page tests the API endpoint with the same method as the React app.</p>
+    
+    <h2>Test Buttons:</h2>
+    <button onclick="testWithFetch()">Test with Fetch API</button>
+    <button onclick="testWithAxios()">Test with Axios (like React)</button>
+    <button onclick="testOptions()">Test OPTIONS (Preflight)</button>
+    
+    <div id="result"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const API_URL = 'https://zb9j38oxx5.execute-api.us-east-1.amazonaws.com/prod/analyze';
+        const SAMPLE_SEQUENCE = 'ATGGATTTATCTGCTCTTCGCGTTGAAGAAGTACAAAATGTCATTAATGCTATGCAGAAAATCTTAGAGTGTCCCATCTGTCTGGAGTTGATCAAGGAACCTGTCTCCACAAAGTGTGACCACATATTTTGCAAAT';
+        
+        function showResult(title, data, isError = false) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result ' + (isError ? 'error' : 'success');
+            resultDiv.innerHTML = `
+                <h3>${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+        
+        async function testWithFetch() {
+            showResult('Testing...', { status: 'Sending request with Fetch API...' });
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sequence: SAMPLE_SEQUENCE,
+                        analysis_type: 'genomics',
+                        use_multi_model: true,
+                        real_time: true
+                    })
+                });
+                
+                const data = await response.json();
+                showResult('✅ Fetch API Success', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    headers: Object.fromEntries(response.headers.entries()),
+                    data: data
+                });
+            } catch (error) {
+                showResult('❌ Fetch API Error', {
+                    error: error.message,
+                    stack: error.stack
+                }, true);
+            }
+        }
+        
+        async function testWithAxios() {
+            showResult('Testing...', { status: 'Sending request with Axios (like React app)...' });
+            
+            try {
+                const response = await axios.post(API_URL, {
+                    sequence: SAMPLE_SEQUENCE,
+                    analysis_type: 'genomics',
+                    use_multi_model: true,
+                    real_time: true
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 300000
+                });
+                
+                showResult('✅ Axios Success (Same as React)', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    headers: response.headers,
+                    data: response.data
+                });
+            } catch (error) {
+                showResult('❌ Axios Error (Same as React)', {
+                    message: error.message,
+                    response: error.response ? {
+                        status: error.response.status,
+                        data: error.response.data
+                    } : 'No response',
+                    request: error.request ? 'Request was made but no response' : 'Request not made'
+                }, true);
+            }
+        }
+        
+        async function testOptions() {
+            showResult('Testing...', { status: 'Sending OPTIONS request (preflight)...' });
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'content-type',
+                        'Origin': window.location.origin
+                    }
+                });
+                
+                const headers = {};
+                response.headers.forEach((value, key) => {
+                    headers[key] = value;
+                });
+                
+                showResult('✅ OPTIONS Success', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    corsHeaders: {
+                        'access-control-allow-origin': headers['access-control-allow-origin'],
+                        'access-control-allow-methods': headers['access-control-allow-methods'],
+                        'access-control-allow-headers': headers['access-control-allow-headers']
+                    },
+                    allHeaders: headers
+                });
+            } catch (error) {
+                showResult('❌ OPTIONS Error', {
+                    error: error.message,
+                    stack: error.stack
+                }, true);
+            }
+        }
+    </script>
+</body>
+</html>

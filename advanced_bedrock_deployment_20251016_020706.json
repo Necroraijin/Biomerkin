@@ -1,0 +1,129 @@
+{
+  "knowledge_bases": {
+    "genomics": {
+      "kb_id": "mock_kb_60395ed8",
+      "status": "deployed",
+      "type": "genomics_analysis",
+      "description": "Knowledge base for genomics and genetic variant analysis"
+    },
+    "medical_literature": {
+      "kb_id": "mock_kb_3b2680f3",
+      "status": "deployed",
+      "type": "literature_research",
+      "description": "Knowledge base for medical literature and research papers"
+    },
+    "drug_database": {
+      "kb_id": "mock_kb_1a5afdea",
+      "status": "deployed",
+      "type": "drug_discovery",
+      "description": "Knowledge base for drug information and clinical trials"
+    }
+  },
+  "fine_tuning": {
+    "training_datasets": {
+      "status": "created",
+      "dataset_ids": {
+        "genomics": "genomics_analysis_comprehensive",
+        "medical": "medical_reasoning_comprehensive",
+        "literature": "literature_summarization_comprehensive"
+      },
+      "dataset_count": 3
+    },
+    "jobs": {
+      "genomics": {
+        "job_id": "mock_job_0b785aa9",
+        "model_name": "BiomerkinGenomicsModelV1",
+        "status": "submitted"
+      },
+      "medical": {
+        "job_id": "mock_job_ea1ba6fe",
+        "model_name": "BiomerkinMedicalModelV1",
+        "status": "submitted"
+      },
+      "literature": {
+        "job_id": "mock_job_b8ef0221",
+        "model_name": "BiomerkinLiteratureModelV1",
+        "status": "submitted"
+      }
+    }
+  },
+  "optimization": {
+    "caching": {
+      "status": "deployed",
+      "cache_type": "dynamodb_with_semantic_similarity",
+      "ttl_hours": 24,
+      "max_cache_size": 10000
+    },
+    "model_selection": {
+      "status": "configured",
+      "rules": {
+        "simple_queries": "anthropic.claude-3-haiku-20240307-v1:0",
+        "complex_analysis": "anthropic.claude-3-sonnet-20240229-v1:0",
+        "high_accuracy_required": "anthropic.claude-3-opus-20240229-v1:0"
+      },
+      "automatic_selection": true
+    },
+    "cost_monitoring": {
+      "status": "configured",
+      "config": {
+        "daily_budget_limit": 100.0,
+        "monthly_budget_limit": 3000.0,
+        "alert_thresholds": [
+          50,
+          75,
+          90
+        ],
+        "cost_tracking_enabled": true
+      }
+    },
+    "request_batching": {
+      "status": "configured",
+      "config": {
+        "enabled": true,
+        "batch_size": 10,
+        "max_wait_time_seconds": 30,
+        "priority_handling": true
+      }
+    }
+  },
+  "infrastructure": {
+    "performance_monitoring": {
+      "status": "configured",
+      "config": {
+        "metrics_collection": true,
+        "real_time_analytics": true,
+        "performance_dashboards": true,
+        "automated_optimization": true
+      }
+    },
+    "alerting": {
+      "status": "configured",
+      "config": {
+        "cost_alerts": true,
+        "performance_alerts": true,
+        "error_rate_alerts": true,
+        "capacity_alerts": true,
+        "notification_channels": [
+          "email",
+          "cloudwatch"
+        ]
+      }
+    },
+    "analytics": {
+      "status": "configured",
+      "config": {
+        "usage_analytics": true,
+        "cost_analytics": true,
+        "performance_analytics": true,
+        "optimization_recommendations": true,
+        "automated_reports": true
+      }
+    }
+  },
+  "deployment_metadata": {
+    "timestamp": "2025-10-16T02:07:06.533944",
+    "mock_mode": true,
+    "total_time": 0.006995677947998047,
+    "status": "completed"
+  }
+}

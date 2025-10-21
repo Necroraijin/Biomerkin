@@ -1,0 +1,10 @@
+{
+  "timestamp": "2025-10-17T02:20:38.100342",
+  "agents": {},
+  "errors": [
+    "genomics: An error occurred (InvalidParameterValueException) when calling the CreateFunction operation: The role defined for the function cannot be assumed by Lambda.",
+    "literature: An error occurred (InvalidParameterValueException) when calling the CreateFunction operation: The role defined for the function cannot be assumed by Lambda.",
+    "drug: An error occurred (InvalidParameterValueException) when calling the CreateFunction operation: The role defined for the function cannot be assumed by Lambda.",
+    "decision: An error occurred (InvalidParameterValueException) when calling the CreateFunction operation: The role defined for the function cannot be assumed by Lambda."
+  ]
+}

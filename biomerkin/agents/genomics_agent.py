@@ -71,6 +71,36 @@ class GenomicsAgent(BaseAgent):
             'analysis_timestamp': results.analysis_timestamp
         }
     
+    def analyze_sequence_data(self, sequence_data: str, reference_sequence: Optional[str] = None) -> GenomicsResults:
+        """
+        Analyze DNA sequence data directly (not from file).
+        
+        Args:
+            sequence_data: DNA sequence string
+            reference_sequence: Optional reference sequence for comparison
+            
+        Returns:
+            GenomicsResults containing analysis results
+        """
+        try:
+            # Create a temporary file with the sequence data
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.fasta', delete=False) as temp_file:
+                temp_file.write(f">sequence\n{sequence_data}\n")
+                temp_file_path = temp_file.name
+            
+            try:
+                # Use existing analyze_sequence method
+                result = self.analyze_sequence(temp_file_path, reference_sequence)
+                return result
+            finally:
+                # Clean up temporary file
+                if os.path.exists(temp_file_path):
+                    os.unlink(temp_file_path)
+                    
+        except Exception as e:
+            self.logger.error(f"Error analyzing sequence data: {str(e)}")
+            raise
+
     def analyze_sequence(self, sequence_file: str, reference_sequence: Optional[str] = None) -> GenomicsResults:
         """
         Analyze DNA sequence for genes, mutations, and proteins.
@@ -549,6 +579,8 @@ class GenomicsAgent(BaseAgent):
             coverage_depth=coverage_depth,
             quality_score=quality_score,
             confidence_level=confidence_level,
+            coverage=coverage_depth,  # Same as coverage_depth for now
+            accuracy=quality_score,   # Same as quality_score for now
             error_rate=n_percentage
         )
     
@@ -613,3 +645,148 @@ class GenomicsAgent(BaseAgent):
                 continue
         
         return protein_sequences
+
+    def interpret_variant_clinical_significance(self, variant: str, gene: str) -> Dict[str, Any]:
+        """
+        Interpret clinical significance of a genetic variant using ACMG guidelines.
+        
+        Args:
+            variant: Variant in HGVS format (e.g., c.1234G>A)
+            gene: Gene symbol
+            
+        Returns:
+            Dictionary containing clinical interpretation
+        """
+        try:
+            # This is a simplified implementation
+            # In a real system, this would query ClinVar, ACMG databases, etc.
+            
+            interpretation = {
+                'variant': variant,
+                'gene': gene,
+                'classification': 'Uncertain significance',  # Default
+                'clinical_significance': 'Uncertain significance',
+                'evidence': [],
+                'acmg_criteria': [],
+                'confidence': 0.5,
+                'uncertainties': []
+            }
+            
+            # Simple heuristics for demonstration
+            if 'nonsense' in variant.lower() or '*' in variant:
+                interpretation.update({
+                    'classification': 'Likely pathogenic',
+                    'clinical_significance': 'Likely pathogenic',
+                    'evidence': ['Nonsense variant likely to cause loss of function'],
+                    'acmg_criteria': ['PVS1'],
+                    'confidence': 0.8
+                })
+            elif gene.upper() in ['BRCA1', 'BRCA2', 'TP53']:
+                interpretation.update({
+                    'classification': 'Likely pathogenic',
+                    'clinical_significance': 'Likely pathogenic',
+                    'evidence': ['Variant in clinically significant gene'],
+                    'acmg_criteria': ['PM2', 'PP3'],
+                    'confidence': 0.7
+                })
+            
+            self.logger.info(f"Interpreted variant {variant} in {gene}: {interpretation['classification']}")
+            return interpretation
+            
+        except Exception as e:
+            self.logger.error(f"Error interpreting variant {variant}: {str(e)}")
+            raise
+
+    def identify_genes(self, sequence: str) -> List[Gene]:
+        """
+        Identify genes in a DNA sequence.
+        
+        Args:
+            sequence: DNA sequence string
+            
+        Returns:
+            List of identified genes
+        """
+        try:
+            genes = []
+            
+            # This is a simplified implementation
+            # In a real system, this would use gene prediction algorithms
+            
+            # Mock gene identification for demonstration
+            if len(sequence) > 100:
+                # Create mock genes based on sequence characteristics
+                gene1 = Gene(
+                    id="GENE001",
+                    name="MOCK_GENE_1",
+                    location=GenomicLocation(
+                        chromosome="chr1",
+                        start=1,
+                        end=min(300, len(sequence)),
+                        strand="+"
+                    ),
+                    function="Hypothetical protein with unknown function",
+                    confidence_score=0.8
+                )
+                genes.append(gene1)
+                
+                if len(sequence) > 500:
+                    gene2 = Gene(
+                        id="GENE002", 
+                        name="MOCK_GENE_2",
+                        location=GenomicLocation(
+                            chromosome="chr1",
+                            start=400,
+                            end=min(700, len(sequence)),
+                            strand="-"
+                        ),
+                        function="Regulatory protein involved in transcription",
+                        confidence_score=0.75
+                    )
+                    genes.append(gene2)
+            
+            self.logger.info(f"Identified {len(genes)} genes in sequence")
+            return genes
+            
+        except Exception as e:
+            self.logger.error(f"Error identifying genes: {str(e)}")
+            raise
+
+    def detect_mutations(self, sequence: str, reference_sequence: str = None) -> List[Mutation]:
+        """
+        Detect mutations by comparing sequence to reference.
+        
+        Args:
+            sequence: Query DNA sequence
+            reference_sequence: Reference sequence for comparison
+            
+        Returns:
+            List of detected mutations
+        """
+        try:
+            mutations = []
+            
+            if not reference_sequence:
+                # Create a mock reference for demonstration
+                reference_sequence = sequence[:100] + "A" + sequence[101:]
+            
+            # Simple mutation detection
+            min_length = min(len(sequence), len(reference_sequence))
+            
+            for i in range(min_length):
+                if sequence[i] != reference_sequence[i]:
+                    mutation = Mutation(
+                        position=i + 1,
+                        reference_base=reference_sequence[i],
+                        alternate_base=sequence[i],
+                        mutation_type=MutationType.SNV,
+                        clinical_significance="Uncertain significance"
+                    )
+                    mutations.append(mutation)
+            
+            self.logger.info(f"Detected {len(mutations)} mutations")
+            return mutations
+            
+        except Exception as e:
+            self.logger.error(f"Error detecting mutations: {str(e)}")
+            raise

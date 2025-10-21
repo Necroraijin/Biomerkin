@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-10-18T01:22:23.807702",
+  "passed": [
+    "\u2705 biomerkin-genomics is active and configured",
+    "\u2705 biomerkin-proteomics is active and configured",
+    "\u2705 biomerkin-literature is active and configured",
+    "\u2705 biomerkin-drug is active and configured",
+    "\u2705 biomerkin-decision is active and configured",
+    "\u2705 biomerkin-orchestrator is active and configured",
+    "\u2705 Bedrock accessible with 10 Claude models",
+    "\u2705 AmazonBedrockFullAccess attached",
+    "\u2705 AWSLambdaBasicExecutionRole attached",
+    "\u2705 AmazonDynamoDBFullAccess attached",
+    "\u2705 AmazonS3FullAccess attached",
+    "\u2705 DynamoDB table active and accessible",
+    "\u2705 5 S3 buckets found",
+    "\u2705 biomerkin-frontend-20251014-224144 has website hosting",
+    "\u2705 biomerkin-frontend-20251014-224550 has website hosting",
+    "\u2705 biomerkin-frontend-20251014-224731 has website hosting",
+    "\u2705 biomerkin-frontend-20251014-224832 has website hosting",
+    "\u2705 biomerkin-frontend-20251014-224917 has website hosting",
+    "\u2705 API Gateway 'biomerkin-api' exists",
+    "\u2705 biomerkin-genomics has code (266940 bytes)",
+    "\u2705 biomerkin-literature has code (249642 bytes)",
+    "\u2705 biomerkin-decision has code (249989 bytes)",
+    "\u2705 All components connected end-to-end"
+  ],
+  "failed": [],
+  "warnings": [
+    "\u26a0\ufe0f  API has no deployments"
+  ],
+  "score": 100.0
+}

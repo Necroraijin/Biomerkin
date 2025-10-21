@@ -82,8 +82,12 @@ class BedrockAgentService:
             agent_id = response['agent']['agentId']
             self.logger.info(f"Created Bedrock Agent with ID: {agent_id}")
             
+            # Wait for agent to be ready before creating action groups
+            self._wait_for_agent_ready(agent_id)
+            
             # Create action groups for the agent
             self._create_genomics_action_group(agent_id)
+            self._create_proteomics_action_group(agent_id)
             self._create_literature_action_group(agent_id)
             self._create_drug_discovery_action_group(agent_id)
             
@@ -305,6 +309,83 @@ class BedrockAgentService:
             self.logger.error(f"Error creating literature action group: {str(e)}")
             raise
     
+    def _create_proteomics_action_group(self, agent_id: str):
+        """Create action group for proteomics analysis functions."""
+        try:
+            proteomics_functions = {
+                "openapi": "3.0.0",
+                "info": {
+                    "title": "Proteomics Analysis API",
+                    "version": "1.0.0",
+                    "description": "API for autonomous proteomics analysis"
+                },
+                "paths": {
+                    "/analyze-protein": {
+                        "post": {
+                            "summary": "Analyze protein structure and function",
+                            "description": "Analyzes protein for structure, function, and domains",
+                            "operationId": "analyzeProtein",
+                            "requestBody": {
+                                "required": True,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "protein_sequence": {
+                                                    "type": "string",
+                                                    "description": "Protein sequence to analyze"
+                                                },
+                                                "protein_id": {
+                                                    "type": "string",
+                                                    "description": "Protein ID (e.g., UniProt ID)"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "200": {
+                                    "description": "Protein analysis results",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "structure_data": {"type": "object"},
+                                                    "functional_annotations": {"type": "array"},
+                                                    "domains": {"type": "array"}
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            response = self.bedrock_agent_client.create_agent_action_group(
+                agentId=agent_id,
+                agentVersion='DRAFT',
+                actionGroupName='ProteomicsAnalysis',
+                description='Autonomous proteomics analysis functions',
+                actionGroupExecutor={
+                    'lambda': self._get_proteomics_lambda_arn()
+                },
+                apiSchema={
+                    'payload': json.dumps(proteomics_functions)
+                }
+            )
+            
+            self.logger.info(f"Created proteomics action group: {response['agentActionGroup']['actionGroupId']}")
+            
+        except Exception as e:
+            self.logger.error(f"Error creating proteomics action group: {str(e)}")
+            raise
+
     def _create_drug_discovery_action_group(self, agent_id: str):
         """Create action group for drug discovery functions."""
         try:
@@ -384,6 +465,32 @@ class BedrockAgentService:
             self.logger.error(f"Error creating drug discovery action group: {str(e)}")
             raise
     
+    def _wait_for_agent_ready(self, agent_id: str, max_wait_time: int = 300):
+        """Wait for agent to be in a ready state."""
+        import time
+        
+        start_time = time.time()
+        while time.time() - start_time < max_wait_time:
+            try:
+                response = self.bedrock_agent_client.get_agent(agentId=agent_id)
+                agent_status = response['agent']['agentStatus']
+                
+                if agent_status in ['PREPARED', 'FAILED', 'VERSIONED']:
+                    self.logger.info(f"Agent {agent_id} is ready with status: {agent_status}")
+                    return
+                elif agent_status in ['CREATING', 'PREPARING', 'UPDATING']:
+                    self.logger.info(f"Agent {agent_id} status: {agent_status}, waiting...")
+                    time.sleep(10)
+                else:
+                    self.logger.warning(f"Unknown agent status: {agent_status}")
+                    time.sleep(10)
+                    
+            except Exception as e:
+                self.logger.warning(f"Error checking agent status: {str(e)}")
+                time.sleep(10)
+        
+        raise TimeoutError(f"Agent {agent_id} did not become ready within {max_wait_time} seconds")
+
     def _prepare_agent(self, agent_id: str):
         """Prepare the agent for use."""
         try:
@@ -527,6 +634,10 @@ class BedrockAgentService:
     def _get_literature_lambda_arn(self) -> str:
         """Get Lambda ARN for literature functions."""
         return f"arn:aws:lambda:{self.config.aws.region}:{self._get_account_id()}:function:biomerkin-literature-agent"
+    
+    def _get_proteomics_lambda_arn(self) -> str:
+        """Get Lambda ARN for proteomics functions."""
+        return f"arn:aws:lambda:{self.config.aws.region}:{self._get_account_id()}:function:biomerkin-proteomics-agent"
     
     def _get_drug_lambda_arn(self) -> str:
         """Get Lambda ARN for drug discovery functions."""

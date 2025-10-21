@@ -1,0 +1,5 @@
+{
+  "sequence": "ATCGATCGATCGATCG",
+  "use_multi_model": true,
+  "analysis_type": "genomics"
+}

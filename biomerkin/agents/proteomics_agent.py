@@ -882,6 +882,259 @@ class ProteomicsAgent:
             'domains': results.domains if results else []
         }
 
+    def _predict_structure(self, protein_sequence: str, protein_id: str) -> ProteinStructure:
+        """
+        Predict protein structure from sequence.
+        
+        Args:
+            protein_sequence: Protein sequence string
+            protein_id: Protein identifier
+            
+        Returns:
+            ProteinStructure object
+        """
+        try:
+            # This is a simplified mock implementation
+            # In practice, this would use AlphaFold, ChimeraX, or other structure prediction tools
+            
+            structure = ProteinStructure(
+                pdb_id=protein_id,
+                structure_method="Predicted",
+                resolution=None,
+                coordinates=None,
+                secondary_structure=f"Predicted structure for {len(protein_sequence)} residues"
+            )
+            
+            return structure
+            
+        except Exception as e:
+            self.logger.error(f"Error predicting structure for {protein_id}: {str(e)}")
+            raise
+
+    def analyze_protein_sequence(self, protein_sequence: str) -> ProteomicsResults:
+        """
+        Analyze a protein sequence for structure and function.
+        
+        Args:
+            protein_sequence: Protein sequence string
+            
+        Returns:
+            ProteomicsResults containing analysis results
+        """
+        try:
+            # Generate a mock protein ID
+            protein_id = f"seq_{hash(protein_sequence) % 10000:04d}"
+            
+            # Analyze structure
+            structure_data = self._predict_structure(protein_sequence, protein_id)
+            
+            # Analyze function
+            functional_annotations = self._predict_function(protein_sequence, protein_id)
+            
+            # Identify domains
+            domains = self._identify_domains(protein_sequence, protein_id)
+            
+            # Find interactions
+            interactions = self._find_interactions(protein_id, protein_sequence)
+            
+            return ProteomicsResults(
+                protein_id=protein_id,
+                structure_data=structure_data,
+                functional_annotations=functional_annotations,
+                domains=domains,
+                interactions=interactions,
+                analysis_timestamp=datetime.now().isoformat()
+            )
+            
+        except Exception as e:
+            self.logger.error(f"Error analyzing protein sequence: {str(e)}")
+            raise
+
+    def analyze_protein_by_id(self, protein_id: str) -> ProteomicsResults:
+        """
+        Analyze a protein by its identifier.
+        
+        Args:
+            protein_id: Protein identifier (e.g., UniProt ID)
+            
+        Returns:
+            ProteomicsResults containing analysis results
+        """
+        try:
+            # Get protein structure from PDB
+            structure_data = self._query_pdb_structure(protein_id)
+            
+            # Get functional annotations
+            functional_annotations = self._query_uniprot_annotations(protein_id)
+            
+            # Get sequence if available
+            protein_sequence = self._get_protein_sequence(protein_id)
+            
+            # Identify domains
+            domains = self._identify_domains(protein_sequence or "", protein_id)
+            
+            # Find interactions
+            interactions = self._find_interactions(protein_id, protein_sequence or "")
+            
+            return ProteomicsResults(
+                protein_id=protein_id,
+                structure_data=structure_data,
+                functional_annotations=functional_annotations,
+                domains=domains,
+                interactions=interactions,
+                analysis_timestamp=datetime.now().isoformat()
+            )
+            
+        except Exception as e:
+            self.logger.error(f"Error analyzing protein {protein_id}: {str(e)}")
+            raise
+
+    def predict_protein_structure(self, protein_sequence: str) -> ProteinStructure:
+        """
+        Predict protein structure from sequence.
+        
+        Args:
+            protein_sequence: Protein sequence string
+            
+        Returns:
+            ProteinStructure object
+        """
+        try:
+            protein_id = f"pred_{hash(protein_sequence) % 10000:04d}"
+            return self._predict_structure(protein_sequence, protein_id)
+            
+        except Exception as e:
+            self.logger.error(f"Error predicting protein structure: {str(e)}")
+            raise
+
+    def analyze_protein_function(self, protein_sequence: str) -> Dict[str, Any]:
+        """
+        Analyze protein function from sequence.
+        
+        Args:
+            protein_sequence: Protein sequence string
+            
+        Returns:
+            Dictionary containing function analysis
+        """
+        try:
+            protein_id = f"func_{hash(protein_sequence) % 10000:04d}"
+            annotations = self._predict_function(protein_sequence, protein_id)
+            
+            # Categorize annotations
+            categories = []
+            biological_processes = []
+            molecular_functions = []
+            cellular_components = []
+            
+            for annotation in annotations:
+                if annotation.function_type == 'biological_process':
+                    biological_processes.append(annotation.description)
+                elif annotation.function_type == 'molecular_function':
+                    molecular_functions.append(annotation.description)
+                elif annotation.function_type == 'cellular_component':
+                    cellular_components.append(annotation.description)
+                else:
+                    categories.append(annotation.description)
+            
+            return {
+                'categories': categories,
+                'biological_processes': biological_processes,
+                'molecular_functions': molecular_functions,
+                'cellular_components': cellular_components
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error analyzing protein function: {str(e)}")
+            raise
+
+    def analyze_protein_function_by_id(self, protein_id: str) -> Dict[str, Any]:
+        """
+        Analyze protein function by identifier.
+        
+        Args:
+            protein_id: Protein identifier
+            
+        Returns:
+            Dictionary containing function analysis
+        """
+        try:
+            annotations = self._query_uniprot_annotations(protein_id)
+            
+            # Categorize annotations
+            categories = []
+            biological_processes = []
+            molecular_functions = []
+            cellular_components = []
+            
+            for annotation in annotations:
+                if annotation.function_type == 'biological_process':
+                    biological_processes.append(annotation.description)
+                elif annotation.function_type == 'molecular_function':
+                    molecular_functions.append(annotation.description)
+                elif annotation.function_type == 'cellular_component':
+                    cellular_components.append(annotation.description)
+                else:
+                    categories.append(annotation.description)
+            
+            return {
+                'categories': categories,
+                'biological_processes': biological_processes,
+                'molecular_functions': molecular_functions,
+                'cellular_components': cellular_components
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error analyzing protein function for {protein_id}: {str(e)}")
+            raise
+
+    def identify_protein_domains(self, protein_sequence: str) -> List[ProteinDomain]:
+        """
+        Identify protein domains in a sequence.
+        
+        Args:
+            protein_sequence: Protein sequence string
+            
+        Returns:
+            List of ProteinDomain objects
+        """
+        try:
+            protein_id = f"dom_{hash(protein_sequence) % 10000:04d}"
+            return self._identify_domains(protein_sequence, protein_id)
+            
+        except Exception as e:
+            self.logger.error(f"Error identifying protein domains: {str(e)}")
+            raise
+
+    def _get_protein_sequence(self, protein_id: str) -> Optional[str]:
+        """
+        Get protein sequence from UniProt.
+        
+        Args:
+            protein_id: Protein identifier
+            
+        Returns:
+            Protein sequence string or None
+        """
+        try:
+            if not self._is_uniprot_id(protein_id):
+                return None
+            
+            # Query UniProt for sequence
+            uniprot_url = f"https://rest.uniprot.org/uniprotkb/{protein_id}.fasta"
+            response = self._make_request(uniprot_url)
+            
+            if response and response.status_code == 200:
+                fasta_content = response.text
+                lines = fasta_content.split('\n')
+                sequence_lines = [line for line in lines if not line.startswith('>')]
+                return ''.join(sequence_lines)
+            
+        except Exception as e:
+            self.logger.warning(f"Error getting sequence for {protein_id}: {str(e)}")
+        
+        return None
+
     def __del__(self):
         """Cleanup session on deletion."""
         if hasattr(self, 'session'):

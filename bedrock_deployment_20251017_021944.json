@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-10-17T02:19:46.049397",
+  "agents": {},
+  "errors": [
+    "Agent genomics: Parameter validation failed:\nInvalid type for parameter customerEncryptionKeyArn, value: None, type: <class 'NoneType'>, valid types: <class 'str'>",
+    "genomics: Parameter validation failed:\nInvalid type for parameter customerEncryptionKeyArn, value: None, type: <class 'NoneType'>, valid types: <class 'str'>",
+    "Agent literature: Parameter validation failed:\nInvalid type for parameter customerEncryptionKeyArn, value: None, type: <class 'NoneType'>, valid types: <class 'str'>",
+    "literature: Parameter validation failed:\nInvalid type for parameter customerEncryptionKeyArn, value: None, type: <class 'NoneType'>, valid types: <class 'str'>",
+    "Agent drug: Parameter validation failed:\nInvalid type for parameter customerEncryptionKeyArn, value: None, type: <class 'NoneType'>, valid types: <class 'str'>",
+    "drug: Parameter validation failed:\nInvalid type for parameter customerEncryptionKeyArn, value: None, type: <class 'NoneType'>, valid types: <class 'str'>",
+    "Agent decision: Parameter validation failed:\nInvalid type for parameter customerEncryptionKeyArn, value: None, type: <class 'NoneType'>, valid types: <class 'str'>",
+    "decision: Parameter validation failed:\nInvalid type for parameter customerEncryptionKeyArn, value: None, type: <class 'NoneType'>, valid types: <class 'str'>"
+  ]
+}

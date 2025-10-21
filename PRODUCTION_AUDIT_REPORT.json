@@ -1,0 +1,165 @@
+{
+  "critical_issues": [
+    {
+      "category": "SYNTAX",
+      "severity": "CRITICAL",
+      "message": "Syntax error: unterminated triple-quoted string literal (detected at line 4016) (bedrock_genomics_action.py, line 4004)",
+      "file": "lambda_functions\\bedrock_genomics_action.py"
+    },
+    {
+      "category": "SYNTAX",
+      "severity": "CRITICAL",
+      "message": "Syntax error: invalid decimal literal (bedrock_literature_action.py, line 884)",
+      "file": "lambda_functions\\bedrock_literature_action.py"
+    }
+  ],
+  "warnings": [
+    {
+      "category": "LAMBDA",
+      "severity": "WARNING",
+      "message": "Lambda handler may not return proper API Gateway format",
+      "file": "lambda_functions\\bedrock_decision_action.py"
+    },
+    {
+      "category": "LAMBDA",
+      "severity": "WARNING",
+      "message": "Lambda handler may not return proper API Gateway format",
+      "file": "lambda_functions\\bedrock_drug_action.py"
+    },
+    {
+      "category": "LAMBDA",
+      "severity": "WARNING",
+      "message": "Lambda handler may not return proper API Gateway format",
+      "file": "lambda_functions\\bedrock_genomics_action.py"
+    },
+    {
+      "category": "LAMBDA",
+      "severity": "WARNING",
+      "message": "Lambda handler may not return proper API Gateway format",
+      "file": "lambda_functions\\bedrock_literature_action.py"
+    },
+    {
+      "category": "LAMBDA",
+      "severity": "WARNING",
+      "message": "Lambda handler may not return proper API Gateway format",
+      "file": "lambda_functions\\bedrock_proteomics_action.py"
+    },
+    {
+      "category": "AWS",
+      "severity": "WARNING",
+      "message": "AWS client without explicit region",
+      "file": "lambda_functions\\enhanced_analysis_handler.py"
+    }
+  ],
+  "successes": [
+    {
+      "category": "REQUIREMENTS",
+      "severity": "SUCCESS",
+      "message": "boto3 is included",
+      "file": "requirements.txt"
+    },
+    {
+      "category": "REQUIREMENTS",
+      "severity": "SUCCESS",
+      "message": "biopython is included",
+      "file": "requirements.txt"
+    },
+    {
+      "category": "REQUIREMENTS",
+      "severity": "SUCCESS",
+      "message": "requests is included",
+      "file": "requirements.txt"
+    },
+    {
+      "category": "REQUIREMENTS",
+      "severity": "SUCCESS",
+      "message": "fastapi is included",
+      "file": "requirements.txt"
+    },
+    {
+      "category": "AGENTS",
+      "severity": "SUCCESS",
+      "message": "Agent exists",
+      "file": "biomerkin/agents/genomics_agent.py"
+    },
+    {
+      "category": "AGENTS",
+      "severity": "SUCCESS",
+      "message": "Agent exists",
+      "file": "biomerkin/agents/proteomics_agent.py"
+    },
+    {
+      "category": "AGENTS",
+      "severity": "SUCCESS",
+      "message": "Agent exists",
+      "file": "biomerkin/agents/literature_agent.py"
+    },
+    {
+      "category": "AGENTS",
+      "severity": "SUCCESS",
+      "message": "Agent exists",
+      "file": "biomerkin/agents/drug_agent.py"
+    },
+    {
+      "category": "AGENTS",
+      "severity": "SUCCESS",
+      "message": "Agent exists",
+      "file": "biomerkin/agents/decision_agent.py"
+    },
+    {
+      "category": "AWS",
+      "severity": "SUCCESS",
+      "message": "Deployment script exists",
+      "file": "scripts/deploy_biomerkin_to_aws.py"
+    },
+    {
+      "category": "AWS",
+      "severity": "SUCCESS",
+      "message": "Deployment script exists",
+      "file": "scripts/deploy_bedrock_agents.py"
+    },
+    {
+      "category": "AWS",
+      "severity": "SUCCESS",
+      "message": "Deployment script exists",
+      "file": "scripts/deploy_full_bedrock_integration.py"
+    },
+    {
+      "category": "FRONTEND",
+      "severity": "SUCCESS",
+      "message": "package.json is valid",
+      "file": "package.json"
+    },
+    {
+      "category": "FRONTEND",
+      "severity": "SUCCESS",
+      "message": "API URL uses environment variable",
+      "file": "api.js"
+    },
+    {
+      "category": "PRODUCTION",
+      "severity": "SUCCESS",
+      "message": ".env.example exists",
+      "file": ".env.example"
+    },
+    {
+      "category": "PRODUCTION",
+      "severity": "SUCCESS",
+      "message": "README.md exists",
+      "file": "README.md"
+    },
+    {
+      "category": "PRODUCTION",
+      "severity": "SUCCESS",
+      "message": ".env in .gitignore",
+      "file": ".gitignore"
+    }
+  ],
+  "security_issues": [],
+  "summary": {
+    "total_critical": 2,
+    "total_warnings": 6,
+    "total_successes": 17,
+    "total_security": 0
+  }
+}

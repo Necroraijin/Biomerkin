@@ -173,15 +173,15 @@ class BiomerkinCLI:
             print("⚙️ Current Configuration:")
             print(json.dumps(self.config.to_dict(), indent=2))
         elif args.init:
-            self._init_config()
+            self._init_config(args)
         else:
             print("Use --show to display config or --init to create sample config")
     
-    def _init_config(self) -> None:
+    def _init_config(self, args=None) -> None:
         """Initialize configuration file."""
         config_path = Path("biomerkin_config.json")
         
-        if config_path.exists() and not args.force:
+        if config_path.exists() and not (args and args.force):
             print(f"⚠️ Configuration file already exists: {config_path}")
             response = input("Overwrite? (y/N): ")
             if response.lower() != 'y':

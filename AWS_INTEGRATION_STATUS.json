@@ -1,0 +1,180 @@
+{
+  "lambda_functions": [
+    {
+      "name": "biomerkin-decision",
+      "runtime": "python3.11",
+      "memory": 1024,
+      "timeout": 300,
+      "status": "DEPLOYED"
+    },
+    {
+      "name": "biomerkin-literature",
+      "runtime": "python3.11",
+      "memory": 1024,
+      "timeout": 300,
+      "status": "DEPLOYED"
+    },
+    {
+      "name": "biomerkin-drug",
+      "runtime": "python3.11",
+      "memory": 1024,
+      "timeout": 300,
+      "status": "DEPLOYED"
+    },
+    {
+      "name": "biomerkin-proteomics",
+      "runtime": "python3.11",
+      "memory": 1024,
+      "timeout": 300,
+      "status": "DEPLOYED"
+    },
+    {
+      "name": "biomerkin-orchestrator",
+      "runtime": "python3.11",
+      "memory": 1024,
+      "timeout": 300,
+      "status": "DEPLOYED"
+    },
+    {
+      "name": "biomerkin-genomics",
+      "runtime": "python3.11",
+      "memory": 1024,
+      "timeout": 300,
+      "status": "DEPLOYED"
+    }
+  ],
+  "bedrock_agents": [],
+  "api_gateway": [],
+  "s3_buckets": [
+    {
+      "name": "biomerkin-frontend-20251014-224144",
+      "is_website": true,
+      "url": "http://biomerkin-frontend-20251014-224144.s3-website-ap-south-1.amazonaws.com",
+      "created": "2025-10-14 17:15:00+00:00"
+    },
+    {
+      "name": "biomerkin-frontend-20251014-224550",
+      "is_website": true,
+      "url": "http://biomerkin-frontend-20251014-224550.s3-website-ap-south-1.amazonaws.com",
+      "created": "2025-10-14 17:15:57+00:00"
+    },
+    {
+      "name": "biomerkin-frontend-20251014-224731",
+      "is_website": true,
+      "url": "http://biomerkin-frontend-20251014-224731.s3-website-ap-south-1.amazonaws.com",
+      "created": "2025-10-14 17:17:37+00:00"
+    },
+    {
+      "name": "biomerkin-frontend-20251014-224832",
+      "is_website": true,
+      "url": "http://biomerkin-frontend-20251014-224832.s3-website-ap-south-1.amazonaws.com",
+      "created": "2025-10-14 17:18:43+00:00"
+    },
+    {
+      "name": "biomerkin-frontend-20251014-224917",
+      "is_website": true,
+      "url": "http://biomerkin-frontend-20251014-224917.s3-website-ap-south-1.amazonaws.com",
+      "created": "2025-10-14 17:19:28+00:00"
+    }
+  ],
+  "dynamodb_tables": [
+    {
+      "name": "biomerkin-workflows",
+      "status": "ACTIVE",
+      "item_count": 0,
+      "size_bytes": 0
+    }
+  ],
+  "iam_roles": [
+    {
+      "name": "biomerkin-decision-action-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-decision-action-role",
+      "created": "2025-10-16 20:54:27+00:00"
+    },
+    {
+      "name": "biomerkin-decision-bedrock-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-decision-bedrock-role",
+      "created": "2025-10-16 20:48:55+00:00"
+    },
+    {
+      "name": "biomerkin-decision-report-generation-exec-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-decision-report-generation-exec-role",
+      "created": "2025-10-16 20:51:03+00:00"
+    },
+    {
+      "name": "biomerkin-drug-action-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-drug-action-role",
+      "created": "2025-10-16 20:54:05+00:00"
+    },
+    {
+      "name": "biomerkin-drug-bedrock-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-drug-bedrock-role",
+      "created": "2025-10-16 20:48:44+00:00"
+    },
+    {
+      "name": "biomerkin-drug-drug-discovery-exec-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-drug-drug-discovery-exec-role",
+      "created": "2025-10-16 20:50:56+00:00"
+    },
+    {
+      "name": "biomerkin-genomics-action-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-genomics-action-role",
+      "created": "2025-10-16 20:53:19+00:00"
+    },
+    {
+      "name": "biomerkin-genomics-bedrock-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-genomics-bedrock-role",
+      "created": "2025-10-16 20:48:22+00:00"
+    },
+    {
+      "name": "biomerkin-genomics-sequence-analysis-exec-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-genomics-sequence-analysis-exec-role",
+      "created": "2025-10-16 20:50:42+00:00"
+    },
+    {
+      "name": "biomerkin-lambda-execution-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-lambda-execution-role",
+      "created": "2025-10-16 22:06:26+00:00"
+    },
+    {
+      "name": "biomerkin-lambda-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-lambda-role",
+      "created": "2025-10-14 17:11:47+00:00"
+    },
+    {
+      "name": "biomerkin-literature-action-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-literature-action-role",
+      "created": "2025-10-16 20:53:42+00:00"
+    },
+    {
+      "name": "biomerkin-literature-bedrock-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-literature-bedrock-role",
+      "created": "2025-10-16 20:48:33+00:00"
+    },
+    {
+      "name": "biomerkin-literature-literature-search-exec-role",
+      "arn": "arn:aws:iam::242201307639:role/biomerkin-literature-literature-search-exec-role",
+      "created": "2025-10-16 20:50:49+00:00"
+    },
+    {
+      "name": "BiomerkinProteomicsBedrockAgentRole",
+      "arn": "arn:aws:iam::242201307639:role/BiomerkinProteomicsBedrockAgentRole",
+      "created": "2025-10-15 19:07:05+00:00"
+    },
+    {
+      "name": "BiomerkinProteomicsLambdaRole",
+      "arn": "arn:aws:iam::242201307639:role/BiomerkinProteomicsLambdaRole",
+      "created": "2025-10-15 19:07:06+00:00"
+    }
+  ],
+  "cloudwatch_logs": [],
+  "issues": [],
+  "warnings": [
+    "Bedrock agent may be missing: genomics",
+    "Bedrock agent may be missing: proteomics",
+    "Bedrock agent may be missing: literature",
+    "Bedrock agent may be missing: drug",
+    "Bedrock agent may be missing: decision",
+    "No Bedrock agents found - may not be deployed yet"
+  ]
+}

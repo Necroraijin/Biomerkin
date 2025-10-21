@@ -42,3 +42,5 @@ cryptography>=41.0.0  # For encryption and security
 # Optional dependencies for enhanced functionality
 redis>=4.6.0  # For caching
 psutil>=5.9.0  # For system monitoring
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0

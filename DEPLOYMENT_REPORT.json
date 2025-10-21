@@ -1,0 +1,40 @@
+{
+  "lambda_functions": [
+    {
+      "name": "biomerkin-genomics",
+      "arn": "arn:aws:lambda:ap-south-1:242201307639:function:biomerkin-genomics",
+      "status": "deployed"
+    },
+    {
+      "name": "biomerkin-proteomics",
+      "arn": "arn:aws:lambda:ap-south-1:242201307639:function:biomerkin-proteomics",
+      "status": "deployed"
+    },
+    {
+      "name": "biomerkin-literature",
+      "arn": "arn:aws:lambda:ap-south-1:242201307639:function:biomerkin-literature",
+      "status": "deployed"
+    },
+    {
+      "name": "biomerkin-drug",
+      "arn": "arn:aws:lambda:ap-south-1:242201307639:function:biomerkin-drug",
+      "status": "deployed"
+    },
+    {
+      "name": "biomerkin-decision",
+      "arn": "arn:aws:lambda:ap-south-1:242201307639:function:biomerkin-decision",
+      "status": "deployed"
+    },
+    {
+      "name": "biomerkin-orchestrator",
+      "arn": "arn:aws:lambda:ap-south-1:242201307639:function:biomerkin-orchestrator",
+      "status": "deployed"
+    }
+  ],
+  "api_gateway": {
+    "id": "642v46sv19",
+    "name": "biomerkin-api"
+  },
+  "dynamodb_table": "biomerkin-workflows",
+  "errors": []
+}

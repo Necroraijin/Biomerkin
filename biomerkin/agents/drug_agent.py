@@ -975,3 +975,179 @@ class DrugAgent(APIAgent):
                     self.logger.error(f"All request attempts failed for URL: {url}")
         
         return None
+
+    def find_drug_candidates_autonomous(self, target_genes: List[str], condition: str = None,
+                                      therapeutic_area: str = None, discovery_strategy: Dict[str, Any] = None) -> DrugResults:
+        """
+        Autonomously find drug candidates using intelligent search strategies.
+        
+        Args:
+            target_genes: List of target genes
+            condition: Medical condition
+            therapeutic_area: Therapeutic area of interest
+            discovery_strategy: Strategy configuration
+            
+        Returns:
+            DrugResults containing drug candidates
+        """
+        try:
+            # Create target data dictionary for the existing method
+            target_data = {
+                'target_genes': target_genes,
+                'target_proteins': target_genes,  # Simplified mapping
+                'conditions': [condition] if condition else [],
+                'therapeutic_area': therapeutic_area
+            }
+            
+            results = self.find_drug_candidates(target_data)
+            return results
+            
+        except Exception as e:
+            self.logger.error(f"Error in autonomous drug candidate search: {str(e)}")
+            raise
+
+    def analyze_clinical_trials_autonomous(self, drug_candidate: Dict[str, Any], condition: str = None) -> Dict[str, Any]:
+        """
+        Autonomously analyze clinical trials for a drug candidate.
+        
+        Args:
+            drug_candidate: Drug candidate information
+            condition: Medical condition
+            
+        Returns:
+            Dictionary containing trial analysis
+        """
+        try:
+            drug_name = drug_candidate.get('name', '') or drug_candidate.get('drug_name', '')
+            
+            if not drug_name:
+                return {
+                    'total_trials': 0,
+                    'active_trials': 0,
+                    'completed_trials': 0,
+                    'trials': []
+                }
+            
+            # Search for trials
+            trials = self._search_clinical_trials_by_drug(drug_name)
+            
+            # Analyze trial data
+            active_trials = [t for t in trials if t.status.lower() in ['recruiting', 'active', 'enrolling']]
+            completed_trials = [t for t in trials if t.status.lower() in ['completed', 'terminated']]
+            
+            return {
+                'total_trials': len(trials),
+                'active_trials': len(active_trials),
+                'completed_trials': len(completed_trials),
+                'trials': [
+                    {
+                        'trial_id': trial.trial_id,
+                        'title': trial.title,
+                        'phase': trial.phase.value if hasattr(trial.phase, 'value') else str(trial.phase),
+                        'status': trial.status,
+                        'condition': trial.condition
+                    }
+                    for trial in trials
+                ]
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error in autonomous clinical trial analysis: {str(e)}")
+            raise
+
+    def assess_drug_interactions_autonomous(self, primary_drugs: List[str], 
+                                          concurrent_medications: List[str] = None) -> Dict[str, Any]:
+        """
+        Autonomously assess drug interactions.
+        
+        Args:
+            primary_drugs: List of primary drugs
+            concurrent_medications: List of concurrent medications
+            
+        Returns:
+            Dictionary containing interaction analysis
+        """
+        try:
+            all_drugs = primary_drugs + (concurrent_medications or [])
+            
+            # Analyze interactions
+            interaction_analysis = self._analyze_drug_interactions(all_drugs)
+            
+            # Format results
+            interactions = []
+            for pair in interaction_analysis.drug_pairs:
+                interactions.append({
+                    'drug1': pair[0],
+                    'drug2': pair[1],
+                    'severity': interaction_analysis.interaction_severity,
+                    'type': interaction_analysis.interaction_type,
+                    'clinical_significance': interaction_analysis.clinical_significance
+                })
+            
+            return {
+                'interactions': interactions,
+                'overall_severity': interaction_analysis.interaction_severity,
+                'recommendations': interaction_analysis.recommendations
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error in autonomous drug interaction assessment: {str(e)}")
+            raise
+
+    def evaluate_therapeutic_potential_autonomous(self, drug_candidate: Dict[str, Any], 
+                                                target_condition: str = None) -> Dict[str, Any]:
+        """
+        Autonomously evaluate therapeutic potential of a drug candidate.
+        
+        Args:
+            drug_candidate: Drug candidate information
+            target_condition: Target medical condition
+            
+        Returns:
+            Dictionary containing therapeutic evaluation
+        """
+        try:
+            drug_name = drug_candidate.get('name', '') or drug_candidate.get('drug_name', '')
+            mechanism = drug_candidate.get('mechanism_of_action', '')
+            targets = drug_candidate.get('target_genes', []) or drug_candidate.get('target_proteins', [])
+            
+            # Calculate overall therapeutic score
+            base_score = 0.5
+            
+            # Mechanism of action bonus
+            if mechanism and any(term in mechanism.lower() for term in ['inhibitor', 'agonist', 'antagonist']):
+                base_score += 0.2
+            
+            # Target specificity bonus
+            if targets and len(targets) <= 3:  # Specific targeting is better
+                base_score += 0.1
+            
+            # Condition relevance bonus
+            if target_condition and mechanism:
+                if target_condition.lower() in mechanism.lower():
+                    base_score += 0.2
+            
+            overall_score = min(base_score, 1.0)
+            
+            return {
+                'overall_score': overall_score,
+                'efficacy_assessment': {
+                    'predicted_efficacy': 'Moderate' if overall_score > 0.6 else 'Low',
+                    'mechanism_strength': 'Strong' if mechanism else 'Unknown',
+                    'target_specificity': 'High' if len(targets) <= 3 else 'Moderate'
+                },
+                'safety_assessment': {
+                    'predicted_safety': 'Acceptable',
+                    'known_side_effects': drug_candidate.get('side_effects', []),
+                    'contraindications': []
+                },
+                'clinical_utility': {
+                    'unmet_need_address': 'Moderate',
+                    'patient_population': 'Targeted',
+                    'treatment_advantage': 'Potential improvement over standard care'
+                }
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error in autonomous therapeutic potential evaluation: {str(e)}")
+            raise

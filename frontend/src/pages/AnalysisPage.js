@@ -22,6 +22,8 @@ import { useWebSocket } from '../services/websocket';
 const AnalysisPage = () => {
   const navigate = useNavigate();
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [manualSequence, setManualSequence] = useState('');
+  const [inputMode, setInputMode] = useState('file'); // 'file' or 'text'
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [workflowId, setWorkflowId] = useState(null);
   const [progress, setProgress] = useState({});
@@ -66,19 +68,42 @@ const AnalysisPage = () => {
   });
 
   const startAnalysis = async () => {
-    if (!uploadedFile) return;
+    if (!uploadedFile && !manualSequence.trim()) {
+      setError('Please upload a file or enter a DNA sequence');
+      return;
+    }
 
     setIsAnalyzing(true);
     setError(null);
     
     try {
-      const formData = new FormData();
-      formData.append('sequence_file', uploadedFile);
+      let sequenceData = '';
+      
+      // Read file content if file mode
+      if (inputMode === 'file' && uploadedFile) {
+        sequenceData = await uploadedFile.text();
+      } else if (inputMode === 'text' && manualSequence.trim()) {
+        sequenceData = manualSequence.trim();
+      }
 
-      const response = await analysisService.startAnalysis(formData);
-      setWorkflowId(response.data.workflow_id);
+      // Send as JSON directly (matching test.html)
+      const response = await analysisService.startAnalysis(sequenceData);
+      
+      if (response.data.success) {
+        setWorkflowId(response.data.workflow_id);
+        // If results are immediate, navigate to results
+        if (response.data.results) {
+          navigate(`/results/${response.data.workflow_id}`, { 
+            state: { results: response.data } 
+          });
+        }
+      } else {
+        setError(response.data.message || 'Analysis failed');
+        setIsAnalyzing(false);
+      }
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to start analysis');
+      console.error('Analysis error:', err);
+      setError(err.response?.data?.error || err.message || 'Failed to start analysis');
       setIsAnalyzing(false);
     }
   };
@@ -167,11 +192,37 @@ const AnalysisPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-xl shadow-lg p-8"
         >
+          {/* Input Mode Toggle */}
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex rounded-lg border border-gray-300 p-1">
+              <button
+                onClick={() => setInputMode('file')}
+                className={`px-6 py-2 rounded-md font-medium transition-all ${
+                  inputMode === 'file'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Upload File
+              </button>
+              <button
+                onClick={() => setInputMode('text')}
+                className={`px-6 py-2 rounded-md font-medium transition-all ${
+                  inputMode === 'text'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Enter Text
+              </button>
+            </div>
+          </div>
+
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-            Upload DNA Sequence File
+            {inputMode === 'file' ? 'Upload DNA Sequence File' : 'Enter DNA Sequence'}
           </h2>
 
-          {!uploadedFile ? (
+          {inputMode === 'file' && !uploadedFile ? (
             <div
               {...getRootProps()}
               className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-all duration-200 ${
@@ -201,7 +252,7 @@ const AnalysisPage = () => {
                 </div>
               )}
             </div>
-          ) : (
+          ) : inputMode === 'file' ? (
             <div className="bg-gray-50 rounded-lg p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
@@ -221,6 +272,21 @@ const AnalysisPage = () => {
                 </button>
               </div>
             </div>
+          ) : null}
+
+          {/* Text Input Mode */}
+          {inputMode === 'text' && (
+            <div>
+              <textarea
+                value={manualSequence}
+                onChange={(e) => setManualSequence(e.target.value)}
+                placeholder="Paste your DNA sequence here (ATCG format)&#10;Example: ATCGATCGATCGATCG&#10;&#10;Or FASTA format:&#10;>sequence_name&#10;ATCGATCGATCGATCG"
+                className="w-full h-64 p-4 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all font-mono text-sm"
+              />
+              <p className="mt-2 text-sm text-gray-500">
+                {manualSequence.length} characters
+              </p>
+            </div>
           )}
 
           {error && (
@@ -230,11 +296,11 @@ const AnalysisPage = () => {
             </div>
           )}
 
-          {uploadedFile && (
+          {((inputMode === 'file' && uploadedFile) || (inputMode === 'text' && manualSequence.trim())) && (
             <div className="mt-6 flex justify-center">
               <button
                 onClick={startAnalysis}
-                disabled={!uploadedFile}
+                disabled={(inputMode === 'file' && !uploadedFile) || (inputMode === 'text' && !manualSequence.trim())}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 <Play className="h-5 w-5" />

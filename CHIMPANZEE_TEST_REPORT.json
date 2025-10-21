@@ -1,0 +1,21 @@
+{
+  "test_date": "2025-10-17T01:55:43.906704",
+  "sequence_file": "chimpanzee.txt",
+  "sequences_tested": 1683,
+  "total_base_pairs": 3253208,
+  "agents_tested": {
+    "genomics": true,
+    "proteomics": false,
+    "literature": true,
+    "drug": true
+  },
+  "agents_working": 3,
+  "total_agents": 4,
+  "results_summary": {
+    "genes_found": 0,
+    "mutations_found": 0,
+    "proteins_analyzed": 0,
+    "articles_found": 0,
+    "drugs_found": 1
+  }
+}
